@@ -109,7 +109,7 @@ func main() {
 			return
 		}
 		// SQL injection in password only
-		rows, err := db.Query("SELECT usr.name FROM usr WHERE usr.name = '"+username+"' AND usr.password = $1;", password)
+		rows, err := db.Query("SELECT usr.name FROM usr WHERE usr.name = '" + username + "';")
 		if err != nil {
 			c.AbortWithError(http.StatusInternalServerError, err)
 			return
