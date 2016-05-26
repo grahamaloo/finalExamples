@@ -10,7 +10,16 @@ $(function(){
     accessToken: 'pk.eyJ1Ijoia2V2aW5ka2UiLCJhIjoiY2lmdTF1MDV3MWlmOHQ1bHl3bmgyYXUwcCJ9.8Givw8o8IVmz9n6Gckshkg'
 	}).addTo(map);
 	
+	var address = new L.LayerGroup();
+	var circle = new L.marker([40, -90], {color: 'orange'});
+    circle.addTo(address);
+    address.addTo(map);
+    var address1 = "United States";
+	address.addLayer(L.marker(address1.latlng));
 	
+	$.get("/addresses", function(data){
+        $("#firstQuery").append(data);
+    }, "html")
 	//var thumbsUp = element(by.css('span.glyphicon-thumbs-up'));
 	//var thumbsDown = element(by.css('span.glyphicon-thumbs-down'));
 

@@ -142,6 +142,11 @@ func main() {
 			c.JSON(http.StatusOK, gin.H{"result": "success", "username": resultUser})
 		}
 	})
+	
+	router.GET("/addresses", func(c *gin.Context) {
+			var a := [2]string{4506 NE 17th ave, Seattle Washington, 8007 NE 179th Place Seattle Washington}
+			db.Query("SELECT a.first_line,a.second_line, address FROM address AS a NATURAL JOIN Car WHERE Car.brand = 'Honda' AND Car.model = 'Civic'")
+	})
 
 	
 
