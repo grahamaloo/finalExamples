@@ -1,47 +1,23 @@
-# finalExamples
-Final project example code
+# Lab "8"
 
-### Lab 9
-Here I put in some code for handling login requests sent in via POST
-Check out the JS files in static to see how I handle them client side
+For this "lab" you won't be turning anything in, but rather you will be working on learning more about SQL injection and how to prevent it.
 
-[Read some examples](https://github.com/gin-gonic/gin#api-examples) to help you out
+First off, if you are seeing this you already cloned down your repo, and pulled in my changes.
 
-### otherExample
-This example was created by Clinton to illustrate how to do the same thing without using gin, a web framework
-This is basically the same, but you have to handle a few extra things yourself.
+Complete the following steps before working:
+### Database
+1. Open up a connection to your database, using the command you used in lab 7, which is found in your database connection settings under "Psql"
+2. Run the following commands in order:
+  * `CREATE TABLE usr(id int PRIMARY KEY, name varchar(200), password varchar(200));`
+  * `INSERT INTO usr VALUES(1, 'admin', 'fjciS3905FjvosKL23fs'),(2,'me','pass'),(3,'another_user','password12345');`
+  * `SELECT * FROM usr;` (This is just to check that you got the data inserted)
+3. If this is a lab computer or you haven't worked on this computer before, don't forget to add the file `.env` and place inside of that `DATABASE_URL=` and then your database url.
+4. Run `heroku local` and open a new tab in your browser, pointing to `localhost:5000`
+5. Try logging in, using `me` and `pass` you should see that you logged in as "me"
+6. Try using SQL Injection to bypass the login restriction, logging in as "admin". If you followed the slides you should see "Logged in as another_user". Try looking at the Go code, and thinking about what you did to your query to get this result instead of simply logging in as "me"
+7. Retry step 6, except modifying your injection to reliably login as a specific user
+8. Try inserting some data into the table, or dropping the whole table (Remember **THIS IS PERMANENT!**)
+9. Modify the go code to protect against SQL Injection of this form [Check out the docs for the library we are using.](https://godoc.org/github.com/lib/pq#hdr-Queries) (Hint: The only way they describe how to handle input is using parameterized queries. The function Query can take an arbitrary number of arguments, and order matters)
+10. Check to make sure that your change actually prevented an attack.
 
-## General idea:
-When you want to retrieve data and display it, use a GET request. When you want to send in data and get a response, use a POST request. You can return HTML or JSON from a POST or GET request.
-Other than that use the 4 step example from lab 7 to get it working. You want to query -> add vars -> scan -> display. Then, send back that data to the user
-
-Your code should be something like this:
-```
-  router.GET("/allTrips", func(c *gin.Context) {
-    rows, err := db.Query("YOUR QUERY HERE;")
-		if err != nil {
-			c.AbortWithError(http.StatusInternalServerError, err)
-			return
-		}
-		// if you are simply inserting data you can stop here. I'd suggest returning a JSON object saying "insert successful" or something along those lines.
-		// get all the columns. You can do something with them here if you like, such as adding them to a table header, or adding them to the JSON
-		cols, _ := rows.Columns()
-		if len(cols) == 0 {
-			c.AbortWithStatus(http.StatusNoContent)
-			return
-		}
-		// This will hold an array of all values
-		// makes an array of size 1, storing strings (replace with int or whatever data you want to store)
-		output := make([]string, 1)
-		
-    // The variable(s) here should match your returned columns in the EXACT same order as you give them in your query
-		var returnedColumn1 string
-		for rows.Next() {
-			rows.Scan(&returnedColumn1)
-			// VERY important that you store the result back in output
-			output = append(output, returnedColumn1)
-		}
-		//Finally, return your results to the user:
-    c.JSON(http.StatusOK, gin.H{"result": output})
-  }
-```
+Nothing to submit for this lab, if you got this far you are well on your way to learning how to secure your database!
