@@ -29,3 +29,6 @@ header {
 button, input{
   display: block;
 }
+#map {
+	min-height: 400px;
+}
