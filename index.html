@@ -9,6 +9,8 @@
           <!-- leaflet libraries -->
     	<script src="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"></script>
    		<link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css" />
+   		
+   		<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.6/angular.min.js"></script>
         
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0-beta1/jquery.js"></script>
         <script src="static/main.js"></script>
@@ -17,16 +19,16 @@
         <header>
             <h1>Final Project Group 2</h1>
         </header>
-        <div class="login-inputs">
+        <div class="login-inputs col-md-5">
           <p>make a donation as a previous donor</p>
           <span>email: <input type="text" id="password1"/></span>
           <span>Donation amount: <input type="text" id="username1"/></span>
           <span>Payment method: <input type="text" id="password1"/></span>
-          <button id="login1">Login</button>
+          <button id="submit1">Submit</button>
           <span id="result1"></span>
+          <div id="map"></div>
         </div>
-        <div id="map"></div>
-        <div class="login-inputs">
+         <div  class="login-inputs col-md-5">
           <p>Make a donation as a new donor</p>
           <span>First Name: <input type="text" id="username2"/></span>
           <span>Last Name: <input type="text" id="password2"/></span>
@@ -37,9 +39,21 @@
           <span>City: <input type="text" id="password2"/></span>
           <span>State Code: <input type="text" id="password2"/></span>
           <span>Donation amount: <input type="text" id="password2"/></span>
-          <span>Payment type: <input type="text" id="password2"/></span>
-          <button id="login2">Login</button>
+  <!--        <span>Payment type:</span>
+          <form action="">
+ 		  <input type="radio" name="gender" value="male"> Check
+  		  <input type="radio" name="gender" value="female"> Cash
+ 		  <input type="radio" name="gender" value="other"> Credit Card
+		  </form>
+		  <span>Credit Card: <input type="checkbox" ng-model="checked" aria-label="Toggle ngHide"></span>
+		  <div class="check-element" ng-show="checked">
+		  	<span>Card number: <input type="text" id="password2"/></span>
+          	<span>CSV: <input type="text" id="password2"/></span>
+		  </div>
+-->
+          <button id="submit2">Submit</button>
           <span id="result2"></span>
         </div>
+       
     </body>
 </html>

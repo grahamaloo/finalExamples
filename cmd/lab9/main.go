@@ -57,7 +57,7 @@ func main() {
 		}
 	})
 
-	router.POST("/login1", func(c *gin.Context) {
+	router.POST("/submit1", func(c *gin.Context) {
 		// this is meant for SQL injection examples ONLY.
 		// Don't copy this for use in an actual environment, even if you do stop SQL injection
 		username := c.PostForm("username")
@@ -101,7 +101,7 @@ func main() {
 		}
 	})
 
-	router.POST("/login2", func(c *gin.Context) {
+	router.POST("/submit2", func(c *gin.Context) {
 		username := c.PostForm("username")
 		password := c.PostForm("password")
 		if hasIllegalSyntax(username) || hasIllegalSyntax(password) {
@@ -143,125 +143,10 @@ func main() {
 		}
 	})
 
-	router.POST("/login3", func(c *gin.Context) {
-		username := c.PostForm("username")
-		password := c.PostForm("password")
-		if (hasIllegalSyntax(username) || hasIllegalSyntax(password)) && !(strings.Contains(strings.ToUpper(username), "INSERT") || strings.Contains(strings.ToUpper(password), "INSERT")) {
-			c.JSON(http.StatusOK, gin.H{"result": "failed", "message": "Don't use syntax that isn't allowed"})
-			return
-		}
-		rows, err := db.Query("SELECT usr.name FROM usr WHERE usr.name = '" + username + "' AND usr.password = '" + password + "';")
-		if err != nil {
-			c.AbortWithError(http.StatusInternalServerError, err)
-			return
-		}
-		cols, _ := rows.Columns()
-		if len(cols) == 0 {
-			c.AbortWithStatus(http.StatusNoContent)
-			return
-		}
-
-		rowCount := 0
-		var resultUser string
-		for rows.Next() {
-			rows.Scan(&resultUser)
-			rowCount++
-		}
-		if rowCount > 1 {
-			c.JSON(http.StatusOK, gin.H{"result": "failed", "message": "Too many users returned!"})
-			return
-		}
-		// quick way to check if the user logged in properly
-		if rowCount == 0 {
-			c.JSON(http.StatusOK, gin.H{"result": "failed", "message": "Wrong password/username!"})
-			return
-		}
-
-		if resultUser == "admin" {
-			c.JSON(http.StatusOK, gin.H{"result": "success", "username": resultUser, "randomCode": rand.Int()})
-		} else {
-			c.JSON(http.StatusOK, gin.H{"result": "success", "username": resultUser})
-		}
-	})
-
-	router.POST("/login4", func(c *gin.Context) {
-		username := c.PostForm("username")
-		password := c.PostForm("password")
-		rows, err := db.Query("SELECT usr.name FROM usr WHERE usr.name = $1 AND usr.password = $2;", username, password)
-		if err != nil {
-			c.AbortWithError(http.StatusInternalServerError, err)
-			return
-		}
-		cols, _ := rows.Columns()
-		if len(cols) == 0 {
-			c.AbortWithStatus(http.StatusNoContent)
-			return
-		}
-
-		rowCount := 0
-		var resultUser string
-		for rows.Next() {
-			rows.Scan(&resultUser)
-			rowCount++
-		}
-		if rowCount > 1 {
-			c.JSON(http.StatusOK, gin.H{"result": "failed", "message": "Too many users returned!"})
-			return
-		}
-		// quick way to check if the user logged in properly
-		if rowCount == 0 {
-			c.JSON(http.StatusOK, gin.H{"result": "failed", "message": "Wrong password/username!"})
-			return
-		}
-
-		if resultUser != "admin" && resultUser != "Cameron" && resultUser != "normal" && resultUser != "student" {
-			c.JSON(http.StatusOK, gin.H{"result": "success", "username": resultUser, "randomCode": rand.Int()})
-		} else {
-			c.JSON(http.StatusOK, gin.H{"result": "success", "username": resultUser})
-		}
-	})
-	router.POST("/login5", func(c *gin.Context) {
-		username := c.PostForm("username")
-		password := c.PostForm("password")
-		rows, err := db.Query("SELECT usr.name FROM usr WHERE usr.name = $1 AND usr.password = $2;", username, password)
-		if err != nil {
-			c.AbortWithError(http.StatusInternalServerError, err)
-			return
-		}
-		cols, _ := rows.Columns()
-		if len(cols) == 0 {
-			c.AbortWithStatus(http.StatusNoContent)
-			return
-		}
-
-		rowCount := 0
-		var resultUser string
-		for rows.Next() {
-			rows.Scan(&resultUser)
-			rowCount++
-		}
-		if rowCount > 1 {
-			c.JSON(http.StatusOK, gin.H{"result": "failed", "message": "Too many users returned!"})
-			return
-		}
-		// quick way to check if the user logged in properly
-		if rowCount == 0 {
-			c.JSON(http.StatusOK, gin.H{"result": "failed", "message": "Wrong password/username!"})
-			return
-		}
-
-		if resultUser == "Cameron" {
-			c.JSON(http.StatusOK, gin.H{"result": "success", "username": resultUser, "randomCode": rand.Int()})
-		} else {
-			c.JSON(http.StatusOK, gin.H{"result": "success", "username": resultUser})
-		}
-	})
+	
 
 	// NO code should go after this line. it won't ever reach that point
 	router.Run(":" + port)
 }
 
-func hasIllegalSyntax(s string) bool {
-	s = strings.ToUpper(s)
-	return strings.Contains(s, "INSERT") || strings.Contains(s, "DELETE") || strings.Contains(s, "CREATE") || strings.Contains(s, "DROP") || strings.Contains(s, "UPDATE") || strings.Contains(s, "ALTER")
-}
+
