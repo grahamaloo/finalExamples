@@ -95,7 +95,7 @@ func main() {
 		var state_code string
 		for rows.Next() {
 			rows.Scan(&first_line, &second_line, &city)
-			add := Address{first_line, second_line, city, state_code}
+			add := Address{"" + first_line, "" + second_line, "" + city, "" + state_code}
 			tempAddresses = append(tempAddresses, add)
 		}
 
