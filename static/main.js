@@ -1,6 +1,5 @@
 $(function(){
 
-
 	var map = L.map('map').setView([38.152, -95.625], 4);
      //Create a tile layer variable using the appropriate url
     L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
@@ -11,15 +10,32 @@ $(function(){
 	}).addTo(map);
 	
 	var address = new L.LayerGroup();
-	var circle = new L.marker([40, -90], {color: 'orange'});
+	var circle = new L.marker([40, -80], {color: 'orange'});
     circle.addTo(address);
     address.addTo(map);
     var address1 = "United States";
-	address.addLayer(L.marker(address1.latlng));
+	//console.log(address1.latlng);
+	L.esri.Geocoding.geocode().address('380 New York St').city('Redlands').region('California').postal(92373).run(function(err, results, response){
+  		var circle2 = new L.marker([results.results[0].latlng.lat,results.results[0].latlng.lng]);
+  		console.log(results.results[0].latlng.lat);
+  		circle2.addTo(map);
+	});
 	
+
+/*
 	$.get("/addresses", function(data){
         $("#firstQuery").append(data);
     }, "html")
+  */  
+    /*
+    	geocoder = new google.maps.Geocoder();
+  		geocoder.geocode( {address:address}, function(results, status) {
+		alert(results[0].geometry.lat());
+     	 var marker = new L.circleMarker([results[0].geometry.lat(),results[0].geometry.lat()], {color: 'orange'});
+  });
+  	marker.addTo(map);
+  	*/
+})
 	//var thumbsUp = element(by.css('span.glyphicon-thumbs-up'));
 	//var thumbsDown = element(by.css('span.glyphicon-thumbs-down'));
 
@@ -52,4 +68,4 @@ $(function(){
     }
     */
 
-})
+
