@@ -23,7 +23,10 @@ $(function(){
 	
 	$.get("/myquery", function(data){
 		console.log(data);
-});
+  });
+  $.get("/addresses", function(data){
+    console.log(data);
+  });
 	
 /*
 	$.get("/addresses", function(data){
