@@ -58,7 +58,7 @@ func main() {
 	})*/
 	
 	router.GET("/myquery", func(c *gin.Context) {
-		c.JSON(http.StatusOK, gin.H{"name":"Ned"});
+		c.JSON(http.StatusOK, gin.H{"names":[]interface{}{"Ned", "Caetlyn", "Rob", "Ygritte", "Osha", "Hodor"},});
 	})
 /*
 	router.POST("/submit1", func(c *gin.Context) {
