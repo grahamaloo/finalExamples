@@ -60,12 +60,47 @@ func main() {
 	type NameList struct {
 		Names []string
 	}
+
+	type Address struct {
+		LineOne string
+		LineTwo string
+		City string
+		State string
+	}
+
+	type AddressList struct {
+		Addresses []Address
+	}
 	
 	router.GET("/myquery", func(c *gin.Context) {
 		names := NameList{[]string{"Ned", "Caetlyn", "Rob", "Ygritte", "Osha", "Hodor"}}
 		//c.JSON(http.StatusOK, gin.H{"names":[]interface{}{"Ned", "Caetlyn", "Rob", "Ygritte", "Osha", "Hodor"},});
-		c.JSON(http.StatusOK, names);
+		c.JSON(http.StatusOK, names)
 	})
+
+	router.GET("/addresses", func(c *gin.Context) {
+		rows, err := db.Query("SELECT first_line, second_line, city, state_code FROM address;")
+		if err != nil {
+			c.AbortWithError(http.StatusInternalServerError, err)
+		}
+
+		cols, _ := rows.Columns()
+		if len(cols) == 0 {
+			c.AbortWithStatus(http.StatusNoContent)
+		}
+		var tempAddresses []Address
+		var first_line string
+		var second_line string
+		var city string
+		var state_code string
+		for rows.Next() {
+			rows.Scan(&first_line, &second_line, &city)
+			add := Address{first_line, second_line, city, state_code}
+			tempAddresses = append(tempAddresses, add)
+		}
+
+		c.JSON(http.StatusOK, AddressList{tempAddresses})
+		})
 /*
 	router.POST("/submit1", func(c *gin.Context) {
 		// this is meant for SQL injection examples ONLY.
