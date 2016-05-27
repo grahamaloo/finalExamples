@@ -10,7 +10,7 @@ import (
 	"math/rand"
 	"net/http"
 	"os"
-	"strings"
+	//"strings"
 
 	// this allows us to run our web server
 	"github.com/gin-gonic/gin"
@@ -47,7 +47,7 @@ func main() {
 		c.HTML(http.StatusOK, "index.html", nil)
 	})
 
-	router.POST("/ping", func(c *gin.Context) {
+	/*router.POST("/ping", func(c *gin.Context) {
 		ping := db.Ping()
 		if ping != nil {
 			// our site can't handle http status codes, but I'll still put them in cause why not
@@ -55,12 +55,12 @@ func main() {
 		} else {
 			c.JSON(http.StatusOK, gin.H{"Ned", "Caetlyn", "Rob", "Ygritte", "Osha", "Hodor"});
 		}
-	})
+	})*/
 	
 	router.GET("/myquery", func(c *gin.Context) {
-		c.http(http.StatusOK, gin.H{"Ned", "Caetlyn", "Rob", "Ygritte", "Osha", "Hodor"});
+		c.JSON(http.StatusOK, gin.H{"name":"Ned"});
 	})
-
+/*
 	router.POST("/submit1", func(c *gin.Context) {
 		// this is meant for SQL injection examples ONLY.
 		// Don't copy this for use in an actual environment, even if you do stop SQL injection
@@ -148,9 +148,10 @@ func main() {
 	})
 	
 	router.GET("/addresses", func(c *gin.Context) {
-			var a := [2]string{4506 NE 17th ave, Seattle Washington, 8007 NE 179th Place Seattle Washington}
+			//var a := [2]string{4506 NE 17th ave, Seattle Washington, 8007 NE 179th Place Seattle Washington}
 			db.Query("SELECT a.first_line,a.second_line, address FROM address AS a NATURAL JOIN Car WHERE Car.brand = 'Honda' AND Car.model = 'Civic'")
 	})
+	*/
 
 	
 
