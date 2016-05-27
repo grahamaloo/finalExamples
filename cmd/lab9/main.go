@@ -56,9 +56,15 @@ func main() {
 			c.JSON(http.StatusOK, gin.H{"Ned", "Caetlyn", "Rob", "Ygritte", "Osha", "Hodor"});
 		}
 	})*/
+
+	type NameList struct {
+		Names []string
+	}
 	
 	router.GET("/myquery", func(c *gin.Context) {
-		c.JSON(http.StatusOK, gin.H{"names":[]interface{}{"Ned", "Caetlyn", "Rob", "Ygritte", "Osha", "Hodor"},});
+		names := NameList{[]string{"Ned", "Caetlyn", "Rob", "Ygritte", "Osha", "Hodor"}}
+		//c.JSON(http.StatusOK, gin.H{"names":[]interface{}{"Ned", "Caetlyn", "Rob", "Ygritte", "Osha", "Hodor"},});
+		c.JSON(http.StatusOK, names);
 	})
 /*
 	router.POST("/submit1", func(c *gin.Context) {
