@@ -63,7 +63,7 @@ func main() {
 
 	type Address struct {
 		LineOne string
-		LineTwo string
+		LineTwo sql.NullString
 		City string
 		State string
 	}
