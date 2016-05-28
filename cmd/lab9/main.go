@@ -90,12 +90,12 @@ func main() {
 		}
 		var tempAddresses []Address
 		var first_line string
-		var second_line string
+		var second_line sql.NullString
 		var city string
 		var state_code string
 		for rows.Next() {
-			rows.Scan(&first_line, &second_line, &city)
-			add := Address{"" + first_line, "" + second_line, "" + city, "" + state_code}
+			rows.Scan(&first_line, &second_line, &city, &state_code)
+			add := Address{first_line, second_line, city, state_code}
 			tempAddresses = append(tempAddresses, add)
 		}
 
