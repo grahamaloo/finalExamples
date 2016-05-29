@@ -10,6 +10,7 @@ import (
 	"math/rand"
 	"net/http"
 	"os"
+	"time"
 	//"strings"
 
 	// this allows us to run our web server
@@ -101,6 +102,35 @@ func main() {
 
 		c.JSON(http.StatusOK, AddressList{tempAddresses})
 		})
+
+	router.POST("/donationOldPerson", func(c *gin.Context) {
+		email := c.PostForm("email")
+		amount := c.PostForm("amount")
+		paymentId := c.PostForm("payment") // assume for now payment is passing the id. this is not normal functionality
+
+		if hasIllegalSyntax(email) || hasIllegalSyntax(amount) || hasIllegalSyntax(payment) {
+			c.JSON(http.StatusOK, gin.H{"result":"failed", "message":"improper syntax"})
+			return
+		}
+
+		var personId int64
+		err := db.QueryRow("SELECT person.person_id FROM person WHERE person.email = $1;", email).Scan(&personId)
+		if err == sql.ErrNoRows {
+			c.JSON(http.StatusOK, gin.H{"result":"failed", "message":"no user with that email"})
+			return
+		}
+		if err != nil {
+			c.AbortWithError(http.StatusInternalServerError, err)
+			return
+		}
+
+		current_time := time.Now().Local()
+		_, err := db.Exec("SELECT add_donation($1, $2, $3, $4);" , amount, current_time.Format("2006-01-02"), personId, paymentId)
+		if err != nil {
+			c.AbortWithError(http.StatusInternalServerError, err)
+			return
+		}
+	})
 /*
 	router.POST("/submit1", func(c *gin.Context) {
 		// this is meant for SQL injection examples ONLY.

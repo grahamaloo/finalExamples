@@ -27,6 +27,10 @@ $(function(){
   $.get("/addresses", function(data){
     console.log(data);
   });
+
+  $("#submit1").click(function(){
+      donationOldPerson();
+    });
 	
 /*
 	$.get("/addresses", function(data){
@@ -52,9 +56,7 @@ $(function(){
         }
     }, "json")
 
-    $("#submit1").click(function(){
-      login(1);
-    });
+    
     $("#submit2").click(function(){
       login(2);
     });
@@ -72,6 +74,9 @@ $(function(){
           }
         });
     }
-    */
 
+    */
+    function donationOldPerson() {
+      $.post("/donationOldPerson")
+    }
 
