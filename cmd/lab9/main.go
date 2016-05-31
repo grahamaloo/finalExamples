@@ -192,7 +192,7 @@ func main() {
 		}
 		
 		current_time := time.Now().Local()
-		f, err4 := strconv.ParseFloat(amount, 8)
+		f, err4 := strconv.Atoi(amount)
 		if err4 != nil {
 			c.AbortWithError(http.StatusInternalServerError, err4)
 		}
