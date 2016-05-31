@@ -108,6 +108,11 @@ func main() {
 		amount := c.PostForm("amount")
 		paymentId := c.PostForm("payment") // assume for now payment is passing the id. this is not normal functionality
 
+		//if hasIllegalSyntax(email) || hasIllegalSyntax(amount) || hasIllegalSyntax(payment) {
+		//	c.JSON(http.StatusOK, gin.H{"result":"failed", "message":"improper syntax"})
+		//	return
+		//}
+
 		var personId int64
 		err := db.QueryRow("SELECT person.person_id FROM person WHERE person.email = $1;", email).Scan(&personId)
 		if err == sql.ErrNoRows {

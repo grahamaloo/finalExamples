@@ -77,6 +77,14 @@ $(function(){
 
     */
     function donationOldPerson() {
-      $.post("/donationOldPerson")
+      $.post("/donationOldPerson", {email: $("email-old").val(), amount: $("amount_old").val(), payment: $.("payment-id-old").val()}).done(function(data) {
+        if(data.result == "failed") {
+          console.log(data);
+          $("#result-old").text("" + data.message);
+        } else {
+          console.log(data);
+          $("#result-old").text("Success! " + data.message);
+        }
+      })
     }
 
