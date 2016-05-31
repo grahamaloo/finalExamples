@@ -197,7 +197,7 @@ func main() {
 		_, err = db.Exec("SELECT add_donation($1, $2, $3, $4)", amount, current_time.Format("2006-01-02"), personId, paymentId)
 		
 		if err != nil {
-			c.JSON(http.StatusOK, gin.H{"result":"failed", "message":"donation insert did not succeed"})
+			//c.JSON(http.StatusOK, gin.H{"result":"failed", "message":"donation insert did not succeed"})
 			c.AbortWithError(http.StatusInternalServerError, err)
 			return
 		} else {
