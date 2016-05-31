@@ -43,9 +43,10 @@ $(function(){
     console.log(data);
     for (var i = 0; i < data.length; i++) {
       L.esri.Geocoding.geocode().address(data[i].LineOne).city(data[i].City).region(data[i].State).run(function(err, results, response){
-      var circle2 = new L.marker([results.results[0].latlng.lat,results.results[0].latlng.lng]);
-      console.log(results.results[0].latlng.lat);
-      circle2.addTo(map);
+        var circle2 = new L.marker([results.results[0].latlng.lat,results.results[0].latlng.lng]);
+        console.log(results.results[0].latlng.lat);
+        circle2.addTo(map);
+      })
     }
   });
 
