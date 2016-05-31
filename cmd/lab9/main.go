@@ -154,7 +154,7 @@ func main() {
 			return
 		}
 		if err != nil {
-			c.AbortWithError(http.StatusInternalServerError, err2)
+			c.AbortWithError(http.StatusInternalServerError, err)
 			return
 		}
 		
