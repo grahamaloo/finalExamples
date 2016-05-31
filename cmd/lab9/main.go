@@ -137,7 +137,7 @@ func main() {
 		addr_line_1 := c.PostForm("addr_line_1")
 		addr_line_2 := c.PostForm("addr_line_2")
 		city := c.PostForm("city")
-		state_code := c.PostForm(state_code")
+		state_code := c.PostForm("state_code")
 
 
 		_, err := db.Exec("SELECT insert_person($1, $2, $3, $4, $5, $6, $7, $8);" , f_name, l_name, phone, email, addr_line_1, addr_line_2, city, state_code)
