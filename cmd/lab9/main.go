@@ -155,7 +155,7 @@ func main() {
 	})
 	
 	router.POST("/donationNewPerson", func(c *gin.Context) {
-		email := c.PostForm("email")
+		//email := c.PostForm("email")
 		amount := c.PostForm("amount")
 		paymentId := c.PostForm("payment") // assume for now payment is passing the id. this is not normal functionality
 		//f_name := c.PostForm("f_name")
@@ -177,7 +177,7 @@ func main() {
 		}
 		
 		var personId int64
-		err = db.QueryRow("SELECT person.person_id FROM person WHERE person.email = $1;", email).Scan(&personId)
+		err = db.QueryRow("SELECT person.person_id FROM person WHERE person.email = 'grahamtk@uw.edu';").Scan(&personId)
 		if err == sql.ErrNoRows {
 			c.JSON(http.StatusOK, gin.H{"result":"failed", "message":"person insert did not succeed"})
 			return
