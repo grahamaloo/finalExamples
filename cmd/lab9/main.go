@@ -191,7 +191,11 @@ func main() {
 			return
 		}
 		
-		current_time := time.Now().Local()
+		current_time, err2 := time.Now().Local().Format("2006-01-02")
+		if err3 != nil {
+			c.AbortWithError(http.StatusInternalServerError, err3)
+		}
+	
 		_, err = db.Exec("SELECT add_donation($1, $2, $3, $4)", amount, current_time.Format("2006-01-02"), personId, paymentId)
 		
 		if err != nil {
