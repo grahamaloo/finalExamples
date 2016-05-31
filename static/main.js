@@ -17,7 +17,6 @@ $(function(){
 	//console.log(address1.latlng);
 	L.esri.Geocoding.geocode().address('380 New York St').city('Redlands').region('California').postal(92373).run(function(err, results, response){
   		var circle2 = new L.marker([results.results[0].latlng.lat,results.results[0].latlng.lng]);
-  		console.log(results.results[0].latlng.lat);
   		circle2.addTo(map);
 	});
 
@@ -42,6 +41,7 @@ $(function(){
   $.get("/addresses", function(data){
     console.log(data);
     for (var i = 0; i < data.length; i++) {
+      console.log("inside loop");
       L.esri.Geocoding.geocode().address(data[i].LineOne).city(data[i].City).region(data[i].State).run(function(err, results, response){
         var circle2 = new L.marker([results.results[0].latlng.lat,results.results[0].latlng.lng]);
         console.log(results.results[0].latlng.lat);
