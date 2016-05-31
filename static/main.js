@@ -40,11 +40,11 @@ $(function(){
 
   $.get("/addresses", function(data){
     console.log(data);
-    console.log(data.length);
-    console.log(data[0].LineOne);
-    for (var i = 0; i < data.length; i++) {
+    console.log(data.Addresses.length);
+    console.log(data.Addresses[0].LineOne);
+    for (var i = 0; i < data.Addresses.length; i++) {
       console.log("inside loop");
-      L.esri.Geocoding.geocode().address(data[i].LineOne).city(data[i].City).region(data[i].State).run(function(err, results, response){
+      L.esri.Geocoding.geocode().address(data.Addresses[i].LineOne).city(data.Addresses[i].City).region(data.Addresses[i].State).run(function(err, results, response){
         var circle2 = new L.marker([results.results[0].latlng.lat,results.results[0].latlng.lng]);
         console.log(results.results[0].latlng.lat);
         circle2.addTo(map);
