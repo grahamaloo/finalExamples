@@ -113,10 +113,6 @@ $(function(){
     }
 
     */
-<<<<<<< HEAD
-    function donationOldPerson() {
-      $.post("/donationOldPerson", {email: $("email-old").val(), amount: $("amount_old").val(), payment: $.("payment-id-old").val()}).done(function(data) {
-=======
 
     function donationOldPersonCard() {
       $.post("/donationOldPerson", {email: $("email-old").val(), amount: $("amount_old").val(), payment: $("payment-id-old").val()
@@ -154,7 +150,6 @@ $(function(){
     }
     function donationNewPerson() {
       $.post("/donationOldPerson", {email: $("email-old").val(), amount: $("amount_old").val(), payment: $("payment-id-old").val()}).done(function(data) {
->>>>>>> 9f339cccd0566961d481f2eb6f96bb1c20e9b581
         if(data.result == "failed") {
           console.log(data);
           $("#result-old").text("" + data.message);
