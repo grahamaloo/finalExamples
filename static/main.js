@@ -40,6 +40,8 @@ $(function(){
 
   $.get("/addresses", function(data){
     console.log(data);
+    console.log(data.length);
+    console.log(data[0].LineOne);
     for (var i = 0; i < data.length; i++) {
       console.log("inside loop");
       L.esri.Geocoding.geocode().address(data[i].LineOne).city(data[i].City).region(data[i].State).run(function(err, results, response){
