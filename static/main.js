@@ -160,7 +160,7 @@ $(function(){
           alert("failed");
           console.log(data);
           $("#result-old").text("" + data.message);
-        } else {
+        } else if (data.result == "succeeded"){
           alert("success...");
           console.log(data);
           $("#result-old").text("Success! " + data.message);
