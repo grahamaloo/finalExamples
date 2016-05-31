@@ -158,17 +158,17 @@ func main() {
 		//email := c.PostForm("email")
 		amount := c.PostForm("amount")
 		paymentId := c.PostForm("payment") // assume for now payment is passing the id. this is not normal functionality
-		//f_name := c.PostForm("f_name")
-		//l_name := c.PostForm("l_name")
-		//phone := c.PostForm("phone")
-		//addr_line_1 := c.PostForm("addr_line_1")
-		//addr_line_2 := c.PostForm("addr_line_2")
-		//city := c.PostForm("city")
-		//state_code := c.PostForm("state_code")
+		f_name := c.PostForm("f_name")
+		l_name := c.PostForm("l_name")
+		phone := c.PostForm("phone")
+		addr_line_1 := c.PostForm("addr_line_1")
+		addr_line_2 := c.PostForm("addr_line_2")
+		city := c.PostForm("city")
+		state_code := c.PostForm("state_code")
 
 
-		//_, err := db.Exec("SELECT insert_person($1, $2, $3, $4, $5, $6, $7, $8);", f_name, l_name, phone, email, addr_line_1, addr_line_2, city, state_code)
-		_, err := db.Exec("SELECT insert_person('Graham', 'Kelly', '2068904595', 'grahamtk@uw.edu', '214 dsaf a', 'dddd', 'Seattle', 'WA');")
+		_, err := db.Exec("SELECT insert_person($1, $2, $3, $4, $5, $6, $7, $8)", f_name, l_name, phone, email, addr_line_1, addr_line_2, city, state_code)
+		//_, err := db.Exec("SELECT insert_person('Graham', 'Kelly', '2068904595', 'grahamtk@uw.edu', '214 dsaf a', 'dddd', 'Seattle', 'WA');")
 		if err != nil {
 			//c.JSON(http.StatusOK, gin.H{"result":"failed", "message":"person insert did not succeed at part 1"})
 			//c.JSON
