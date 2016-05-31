@@ -155,7 +155,7 @@ func main() {
 	})
 	
 	router.POST("/donationNewPerson", func(c *gin.Context) {
-		//email := c.PostForm("email")
+		email := c.PostForm("email")
 		amount := c.PostForm("amount")
 		paymentId := c.PostForm("payment") // assume for now payment is passing the id. this is not normal functionality
 		f_name := c.PostForm("f_name")
