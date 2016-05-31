@@ -143,7 +143,7 @@ func main() {
 		_, err := db.Exec("SELECT insert_person($1, $2, $3, $4, $5, $6, $7, $8);", f_name, l_name, phone, email, addr_line_1, addr_line_2, city, state_code)
 		
 		if err != nil {
-			c.JSON
+			//c.JSON
 			//c.AbortWithError(http.StatusInternalServerError, err)
 			return
 		}
@@ -186,7 +186,7 @@ func main() {
 		_, err := db.Exec("SELECT insert_person($1, $2, $3, $4, $5, $6, $7, $8);", f_name, l_name, phone, email, addr_line_1, addr_line_2, city, state_code)
 		
 		if err != nil {
-			c.JSON
+			//c.JSON
 			//c.AbortWithError(http.StatusInternalServerError, err)
 			return
 		}
