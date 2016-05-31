@@ -53,9 +53,22 @@ $(function(){
   });
 
   $("#submit1").click(function(){
-      donationOldPerson();
+      if($('input[name="prv"]:checked').val() == 1) {
+        alert("submitted");
+         donationOldPersonCard();
+      } else {
+         donationOldPerson();
+      }
     });
-	
+    
+    $("#submit2").click(function(){
+      if($('input[name="new"]:checked').val() == 1) {
+         donationNewPersonCard();
+      } else {
+         donationNewPerson();
+      }
+    });
+
 /*
 	$.get("/addresses", function(data){
         $("#firstQuery").append(data);
@@ -100,7 +113,50 @@ $(function(){
     }
 
     */
-    function donationOldPerson() {
-      $.post("/donationOldPerson")
+
+    function donationOldPersonCard() {
+      $.post("/donationOldPerson", {email: $("email-old").val(), amount: $("amount_old").val(), payment: $("payment-id-old").val()
+                                            , cardNumber: $("card-number-old").val(), cardExp: $("card-exp-old").val()}).done(function(data) {
+        if(data.result == "failed") {
+          console.log(data);
+          $("#result-old").text("" + data.message);
+        } else {
+          console.log(data);
+          $("#result-old").text("Success! " + data.message);
+        }
+      })
+    }
+        function donationOldPerson() {
+      $.post("/donationOldPerson", {email: $("email-old").val(), amount: $("amount_old").val(), payment: $("payment-id-old").val()}).done(function(data) {
+        if(data.result == "failed") {
+          console.log(data);
+          $("#result-old").text("" + data.message);
+        } else {
+          console.log(data);
+          $("#result-old").text("Success! " + data.message);
+        }
+      })
+    }
+        function donationNewPersonCard() {
+      $.post("/donationOldPerson", {email: $("email-old").val(), amount: $("amount_old").val(), payment: $("payment-id-old").val()}).done(function(data) {
+        if(data.result == "failed") {
+          console.log(data);
+          $("#result-old").text("" + data.message);
+        } else {
+          console.log(data);
+          $("#result-old").text("Success! " + data.message);
+        }
+      })
+    }
+    function donationNewPerson() {
+      $.post("/donationOldPerson", {email: $("email-old").val(), amount: $("amount_old").val(), payment: $("payment-id-old").val()}).done(function(data) {
+        if(data.result == "failed") {
+          console.log(data);
+          $("#result-old").text("" + data.message);
+        } else {
+          console.log(data);
+          $("#result-old").text("Success! " + data.message);
+        }
+      })
     }
 
