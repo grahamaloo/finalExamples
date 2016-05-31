@@ -4,7 +4,7 @@
         <meta charset="utf-8">
         <title>Lab 9</title>
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" />
-        <link rel="stylesheet" href="static/main.css" />
+        <link rel="stylesheet" href="../static/main.css" />
         
           <!-- leaflet libraries 
     	<script src="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"></script>
@@ -27,7 +27,7 @@
    		<!--<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.6/angular.min.js"></script>-->
         
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0-beta1/jquery.js"></script>
-        <script src="static/main.js"></script>
+        <script src="../static/main.js"></script>
     </head>
     <body>
         <header>
@@ -38,10 +38,18 @@
           <span>email: <input type="text" id="password1"/></span>
           <span>Donation amount: <input type="text" id="username1"/></span>
           <span>Payment method: <input type="text" id="password1"/></span>
+          <span>card</span>
+          <input type="radio" value="1" name="prv">cash
+          <input type="radio" value="2" name="prv">check
+          <input type="radio" value="3" name="prv">
+          <span>Card number: <input type="text" id="password1"/></span>
+          <span>Expiration date: <input type="text" id="password1"/></span>
           <button id="submit1">Submit</button>
           <span id="result1"></span>
-          <div id="map"></div>
         </div>
+
+        <div id="map"></div>
+
          <div  class="login-inputs col-md-5">
           <p>Make a donation as a new donor</p>
           <span>First Name: <input type="text" id="username2"/></span>
@@ -53,18 +61,13 @@
           <span>City: <input type="text" id="password2"/></span>
           <span>State Code: <input type="text" id="password2"/></span>
           <span>Donation amount: <input type="text" id="password2"/></span>
-  <!--        <span>Payment type:</span>
-          <form action="">
- 		  <input type="radio" name="gender" value="male"> Check
-  		  <input type="radio" name="gender" value="female"> Cash
- 		  <input type="radio" name="gender" value="other"> Credit Card
-		  </form>
-		  <span>Credit Card: <input type="checkbox" ng-model="checked" aria-label="Toggle ngHide"></span>
-		  <div class="check-element" ng-show="checked">
-		  	<span>Card number: <input type="text" id="password2"/></span>
-          	<span>CSV: <input type="text" id="password2"/></span>
-		  </div>
--->
+          <span>Payment method: </span></p>
+          <span>card</span>
+          <input type="radio" value="1" name="new">cash
+          <input type="radio" value="2" name="new">check
+          <input type="radio" value="3" name="new">
+          <span>Card number: <input type="text" id="password1"/></span>
+          <span>Expiration date: <input type="text" id="password1"/></span>
           <button id="submit2">Submit</button>
           <span id="result2"></span>
         </div>

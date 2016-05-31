@@ -17,21 +17,58 @@ $(function(){
 	//console.log(address1.latlng);
 	L.esri.Geocoding.geocode().address('380 New York St').city('Redlands').region('California').postal(92373).run(function(err, results, response){
   		var circle2 = new L.marker([results.results[0].latlng.lat,results.results[0].latlng.lng]);
-  		console.log(results.results[0].latlng.lat);
   		circle2.addTo(map);
 	});
+
+    var arcgisOnline = L.esri.Geocoding.arcgisOnlineProvider();
+
+    var searchControl = L.esri.Geocoding.geosearch({
+    providers: [
+      arcgisOnline,
+      new L.esri.Geocoding.MapServiceProvider({
+        label: 'States and Counties',
+        url: 'https://sampleserver6.arcgisonline.com/arcgis/rest/services/Census/MapServer',
+        layers: [2, 3],
+        searchFields: ['NAME', 'STATE_NAME']
+      })
+    ]
+  }).addTo(map);
 	
 	$.get("/myquery", function(data){
 		console.log(data);
   });
+
   $.get("/addresses", function(data){
     console.log(data);
+    console.log(data.Addresses.length);
+    console.log(data.Addresses[0].LineOne);
+    for (var i = 0; i < data.Addresses.length; i++) {
+      console.log("inside loop");
+      L.esri.Geocoding.geocode().address(data.Addresses[i].LineOne).city(data.Addresses[i].City).region(data.Addresses[i].State).run(function(err, results, response){
+        var circle2 = new L.marker([results.results[0].latlng.lat,results.results[0].latlng.lng]);
+        console.log(results.results[0].latlng.lat);
+        circle2.addTo(map);
+      })
+    }
   });
 
   $("#submit1").click(function(){
-      donationOldPerson();
+      if($('input[name="prv"]:checked').val() == 1) {
+        alert("submitted");
+         donationOldPersonCard();
+      } else {
+         donationOldPerson();
+      }
     });
-	
+    
+    $("#submit2").click(function(){
+      if($('input[name="new"]:checked').val() == 1) {
+         donationNewPersonCard();
+      } else {
+         donationNewPerson();
+      }
+    });
+
 /*
 	$.get("/addresses", function(data){
         $("#firstQuery").append(data);
@@ -76,8 +113,48 @@ $(function(){
     }
 
     */
+<<<<<<< HEAD
     function donationOldPerson() {
       $.post("/donationOldPerson", {email: $("email-old").val(), amount: $("amount_old").val(), payment: $.("payment-id-old").val()}).done(function(data) {
+=======
+
+    function donationOldPersonCard() {
+      $.post("/donationOldPerson", {email: $("email-old").val(), amount: $("amount_old").val(), payment: $("payment-id-old").val()
+                                            , cardNumber: $("card-number-old").val(), cardExp: $("card-exp-old").val()}).done(function(data) {
+        if(data.result == "failed") {
+          console.log(data);
+          $("#result-old").text("" + data.message);
+        } else {
+          console.log(data);
+          $("#result-old").text("Success! " + data.message);
+        }
+      })
+    }
+        function donationOldPerson() {
+      $.post("/donationOldPerson", {email: $("email-old").val(), amount: $("amount_old").val(), payment: $("payment-id-old").val()}).done(function(data) {
+        if(data.result == "failed") {
+          console.log(data);
+          $("#result-old").text("" + data.message);
+        } else {
+          console.log(data);
+          $("#result-old").text("Success! " + data.message);
+        }
+      })
+    }
+        function donationNewPersonCard() {
+      $.post("/donationOldPerson", {email: $("email-old").val(), amount: $("amount_old").val(), payment: $("payment-id-old").val()}).done(function(data) {
+        if(data.result == "failed") {
+          console.log(data);
+          $("#result-old").text("" + data.message);
+        } else {
+          console.log(data);
+          $("#result-old").text("Success! " + data.message);
+        }
+      })
+    }
+    function donationNewPerson() {
+      $.post("/donationOldPerson", {email: $("email-old").val(), amount: $("amount_old").val(), payment: $("payment-id-old").val()}).done(function(data) {
+>>>>>>> 9f339cccd0566961d481f2eb6f96bb1c20e9b581
         if(data.result == "failed") {
           console.log(data);
           $("#result-old").text("" + data.message);
