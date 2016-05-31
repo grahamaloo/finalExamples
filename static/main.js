@@ -153,6 +153,9 @@ $(function(){
       })
     }
     function donationNewPerson() {
+    console.log({email: $("email-new").val(), amount: $("amount-new").val(), payment: $("payment-id-new").val(),
+      								f_name: $("f_name").val(), l_name: $("l_name").val(), phone: $("phone").val(), addr_line_1: $("addr-line-1").val(),
+      								addr_line_2: $("addr-line-2").val(), city: $("city").val(), state_code: $("state-code").val()});
       $.post("/donationNewPerson", {email: $("email-new").val(), amount: $("amount-new").val(), payment: $("payment-id-new").val(),
       								f_name: $("f_name").val(), l_name: $("l_name").val(), phone: $("phone").val(), addr_line_1: $("addr-line-1").val(),
       								addr_line_2: $("addr-line-2").val(), city: $("city").val(), state_code: $("state-code").val()}).done(function(data) {
