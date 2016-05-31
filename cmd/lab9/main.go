@@ -11,7 +11,7 @@ import (
 	"net/http"
 	"os"
 	"time"
-	//"strconv"
+	"strconv"
 	//"strings"
 
 	// this allows us to run our web server
@@ -157,7 +157,7 @@ func main() {
 	router.POST("/donationNewPerson", func(c *gin.Context) {
 		email := c.PostForm("email")
 		amount := c.PostForm("amount")
-		paymentId := c.PostForm("payment") // assume for now payment is passing the id. this is not normal functionality
+		paymentId := strconv.Atoi(c.PostForm("payment")) // assume for now payment is passing the id. this is not normal functionality
 		f_name := c.PostForm("f_name")
 		l_name := c.PostForm("l_name")
 		phone := c.PostForm("phone")
