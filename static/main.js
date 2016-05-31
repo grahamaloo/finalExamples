@@ -20,12 +20,33 @@ $(function(){
   		console.log(results.results[0].latlng.lat);
   		circle2.addTo(map);
 	});
+
+    var arcgisOnline = L.esri.Geocoding.arcgisOnlineProvider();
+
+    var searchControl = L.esri.Geocoding.geosearch({
+    providers: [
+      arcgisOnline,
+      new L.esri.Geocoding.MapServiceProvider({
+        label: 'States and Counties',
+        url: 'https://sampleserver6.arcgisonline.com/arcgis/rest/services/Census/MapServer',
+        layers: [2, 3],
+        searchFields: ['NAME', 'STATE_NAME']
+      })
+    ]
+  }).addTo(map);
 	
 	$.get("/myquery", function(data){
 		console.log(data);
   });
+  
   $.get("/addresses", function(data){
     console.log(data);
+    for (int i = 0; i < data.length; i++) {
+      L.esri.Geocoding.geocode().address(data[i].LineOne).city(data[i].City).region(data[i].State).run(function(err, results, response){
+      var circle2 = new L.marker([results.results[0].latlng.lat,results.results[0].latlng.lng]);
+      console.log(results.results[0].latlng.lat);
+      circle2.addTo(map);
+    }
   });
 
   $("#submit1").click(function(){
