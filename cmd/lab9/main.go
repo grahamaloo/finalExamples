@@ -160,7 +160,7 @@ func main() {
 		paymentId := c.PostForm("payment") // assume for now payment is passing the id. this is not normal functionality
 		f_name := c.PostForm("f_name")
 		l_name := c.PostForm("l_name")
-		phone := strConv.Itoa(c.PostForm("phone"))
+		phone := strconv.Itoa(c.PostForm("phone"))
 		addr_line_1 := c.PostForm("addr_line_1")
 		addr_line_2 := c.PostForm("addr_line_2")
 		city := c.PostForm("city")
