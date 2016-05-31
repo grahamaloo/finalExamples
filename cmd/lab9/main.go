@@ -157,7 +157,8 @@ func main() {
 	router.POST("/donationNewPerson", func(c *gin.Context) {
 		email := c.PostForm("email")
 		amount := c.PostForm("amount")
-		paymentId := strconv.Atoi(c.PostForm("payment")) // assume for now payment is passing the id. this is not normal functionality
+		paymentId2 := c.PostForm("payment")
+		paymentId := strconv.Atoi(paymentId2) // assume for now payment is passing the id. this is not normal functionality
 		f_name := c.PostForm("f_name")
 		l_name := c.PostForm("l_name")
 		phone := c.PostForm("phone")
