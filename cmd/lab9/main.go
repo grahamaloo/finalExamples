@@ -140,10 +140,54 @@ func main() {
 		state_code := c.PostForm("state_code")
 
 
-		_, err := db.Exec("SELECT insert_person($1, $2, $3, $4, $5, $6, $7, $8);" , f_name, l_name, phone, email, addr_line_1, addr_line_2, city, state_code)
+		_, err := db.Exec("SELECT insert_person($1, $2, $3, $4, $5, $6, $7, $8);", f_name, l_name, phone, email, addr_line_1, addr_line_2, city, state_code)
 		
 		if err != nil {
+			c.JSON
+			//c.AbortWithError(http.StatusInternalServerError, err)
+			return
+		}
+		
+		var personId int64
+		err = db.QueryRow("SELECT person.person_id FROM person WHERE person.email = $1;", email).Scan(&personId)
+		if err == sql.ErrNoRows {
+			c.JSON(http.StatusOK, gin.H{"result":"failed", "message":"person insert did not succeed"})
+			return
+		}
+		if err != nil {
 			c.AbortWithError(http.StatusInternalServerError, err)
+			return
+		}
+		
+		current_time := time.Now().Local()
+		_, err = db.Exec("SELECT add_donation($1, $2, $3, $4)", amount, current_time.Format("2006-01-02"), personId, paymentId)
+		if err != nil {
+			c.AbortWithError(http.StatusInternalServerError, err)
+			return
+		} else {
+			c.JSON(http.StatusOK, gin.H{"result":"succeeded", "message":"donation and user successfully added (well no errors at least)"})
+			return
+		}
+	})
+	router.POST("/donationNewPersonCard", func(c *gin.Context) {
+		email := c.PostForm("email")
+		amount := c.PostForm("amount")
+		paymentId := c.PostForm("payment") // assume for now payment is passing the id. this is not normal functionality
+		f_name := c.PostForm("f_name")
+		l_name := c.PostForm("l_name")
+		phone := c.PostForm("phone")
+		addr_line_1 := c.PostForm("addr_line_1")
+		addr_line_2 := c.PostForm("addr_line_2")
+		city := c.PostForm("city")
+		state_code := c.PostForm("state_code")
+		card_num := c.PostForm("cardNumber")
+		card_exp :=  := c.PostForm("cardExp")
+
+		_, err := db.Exec("SELECT insert_person($1, $2, $3, $4, $5, $6, $7, $8);", f_name, l_name, phone, email, addr_line_1, addr_line_2, city, state_code)
+		
+		if err != nil {
+			c.JSON
+			//c.AbortWithError(http.StatusInternalServerError, err)
 			return
 		}
 		
