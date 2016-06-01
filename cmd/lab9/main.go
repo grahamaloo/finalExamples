@@ -135,9 +135,11 @@ func main() {
 	router.POST("/donationOldPersonCard", func(c *gin.Context) {
 		email := c.PostForm("email")
 		amount := c.PostForm("amount")
-		paymentId := c.PostForm("payment") // assume for now payment is passing the id. this is not normal functionality
-		//card_num := c.PostForm("cardNumber")
-		//card_exp := c.PostForm("cardExp")
+		card_num, err2 := strconv.Atoi(c.PostForm("cardNumber")) // assume for now payment is passing the id. this is not normal functionality
+		if err2 != nil {
+			c.AbortWithError(http.StatusInternalServerError, err2)
+		} 
+		card_exp := c.PostForm("cardExp")
 
 		var personId int64
 		err := db.QueryRow("SELECT person.person_id FROM person WHERE person.email = $1;", email).Scan(&personId)
@@ -151,6 +153,8 @@ func main() {
 		}
 
 		current_time := time.Now().Local()
+		var paymentId int64
+		err = db.QueryRow("WITH A AS (INSERT INTO payment_method VALUES (DEFAULT) RETURNING payment_method.payment_method_id) INSERT INTO credit_card_payment(payment_method_id) VALUES ((SELECT payment_method_id FROM A), $1,$2 ) RETURNING credit_card_payment.payment_method_id;", card_num, card_exp).Scan(&paymentId)
 		_, err = db.Exec("SELECT add_donation($1, $2, $3, $4);" , amount, current_time.Format("2006-01-02"), personId, paymentId)
 		if err != nil {
 			c.AbortWithError(http.StatusInternalServerError, err)
