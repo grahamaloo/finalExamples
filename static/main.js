@@ -152,7 +152,7 @@ map.on('click', onMapClick);
       })
     }
         function donationNewPersonCard() {
-      $.post("/donationNewPersonCard", {email: $("#mail-new").val(), amount: $("#amount-new").val(), payment: $("#payment-id-new").val(),
+      $.post("/donationNewPersonCard", {email: $("#email-new").val(), amount: $("#amount-new").val(), payment: $("#payment-id-new").val(),
       								f_name: $("#f_name").val(), l_name: $("#l_name").val(), phone: $("#phone").val(), addr_line_1: $("#addr-line-1").val(),
       								addr_line_2: $("#addr-line-2").val(), city: $("#city").val(), state_code: $("#state-code").val(),
       								cardNumber: $("#card-num-new").val(), cardExp: $("#exp-new").val()}).done(function(data) {
