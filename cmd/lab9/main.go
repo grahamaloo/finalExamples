@@ -169,7 +169,7 @@ func main() {
 			c.JSON(http.StatusOK, gin.H{"result":"failed", "message":"card num look up failed"})
 			return
 		} else {
-			err = db.QueryRow("SELECT payment_method.payment_method_id FROM payment_method AS pm NATURAL JOIN credit_card_payment AS ccp WHERE ccp.card_number = $1)",card_num,card_exp).Scan(&paymentId)
+			err = db.QueryRow("SELECT ccp.payment_method_id FROM credit_card_payment AS ccp WHERE ccp.card_number = $1)", card_num).Scan(&paymentId)
 			if err != nil {
 			//c.AbortWithError(http.StatusInternalServerError, err)
 			c.JSON(http.StatusOK, gin.H{"result":"failed", "message":"select payment id failed"})
