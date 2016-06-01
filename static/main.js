@@ -28,7 +28,7 @@ $(function(){
       new L.esri.Geocoding.MapServiceProvider({
         label: 'States and Counties',
         url: 'https://sampleserver6.arcgisonline.com/arcgis/rest/services/Census/MapServer',
-        layers: [2, 3],
+        layers: [4, 4],
         searchFields: ['NAME', 'STATE_NAME']
       })
     ]
@@ -44,7 +44,7 @@ $(function(){
     console.log(data.Addresses[0].LineOne);
     for (var i = 0; i < data.Addresses.length; i++) {
       console.log("inside loop");
-      L.esri.Geocoding.geocode().address(data.Addresses[i].LineOne).city(data.Addresses[i].City).region(data.Addresses[i].State).run(function(err, results, response){
+      L.esri.Geocoding.geocode().address(data.Addresses[i].LineOne + " " + data.Addresses[i].LineTwo).city(data.Addresses[i].City).region(data.Addresses[i].State).run(function(err, results, response){
         var circle2 = new L.marker([results.results[0].latlng.lat,results.results[0].latlng.lng]);
         console.log(results.results[0].latlng.lat);
         circle2.addTo(map);
