@@ -247,7 +247,8 @@ func main() {
 		
 		err = db.QueryRow("SELECT credit_card_payment.card_number FROM credit_card_payment WHERE credit_card_payment.card_number = $1;", card_num).Scan(&card_num)
 		if err == sql.ErrNoRows {
-			.AbortWithError(http.StatusInternalServerError, err)
+			c.AbortWithError(http.StatusInternalServerError, err)
+			return
 		}
 
 		current_time := time.Now().Local()
