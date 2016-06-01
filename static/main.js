@@ -36,7 +36,7 @@ $(function(){
 
   searchControl.on("results", function(data) {
      map.setView([data.results[0].latlng.lat,data.results[0].latlng.log], 3);
-  }
+  });
 	
 	$.get("/myquery", function(data){
 		console.log(data);
