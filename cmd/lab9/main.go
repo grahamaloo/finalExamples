@@ -159,10 +159,10 @@ func main() {
 		email := c.PostForm("email")
 		amount := c.PostForm("amount")
 		//paymentId := c.PostForm("payment")
-		paymentId, err2 := strconv.Atoi(c.PostForm("payment")) // assume for now payment is passing the id. this is not normal functionality
-		if err2 != nil {
-			c.AbortWithError(http.StatusInternalServerError, err2)
-		} 
+		//paymentId, err2 := strconv.Atoi(c.PostForm("payment")) // assume for now payment is passing the id. this is not normal functionality
+		//if err2 != nil {
+		//	c.AbortWithError(http.StatusInternalServerError, err2)
+		//} 
 		f_name := c.PostForm("f_name")
 		l_name := c.PostForm("l_name")
 		phone := c.PostForm("phone")
@@ -194,7 +194,8 @@ func main() {
 		
 		current_time := time.Now().Local()
 		
-		
+		var paymentId int64
+		db.QueryRow("WITH A AS (INSERT INTO payment_method VALUES (DEFAULT) RETURNING payment_method.payment_method_id) INSERT INTO credit_card_payment(payment_method_id, card_number, exp) VALUES((SELECT payment_method_id FROM A), $1,$2) RETURNING credit_card_payment.payment_method_id;", card_num, card_exp).Scan(&paymentId)
 		_, err = db.Exec("SELECT add_donation($1, $2, $3, $4)", amount, current_time.Format("2006-01-02"), personId, paymentId)
 		
 		if err != nil {
@@ -233,6 +234,8 @@ func main() {
 			//c.AbortWithError(http.StatusInternalServerError, err)
 			return
 		}
+
+
 		
 		var personId int64
 		err = db.QueryRow("SELECT person.person_id FROM person WHERE person.email = $1;", email).Scan(&personId)
