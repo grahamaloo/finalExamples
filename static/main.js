@@ -35,7 +35,7 @@ $(function(){
   }).addTo(map);
 
   searchControl.on("results", function(data) {
-     map.setView([data.results[0].latlng.lat,data.results[0].latlng.lng], 6);
+     map.setView([data.results[0].latlng.lat,data.results[0].latlng.lng], 7);
   });
 	
 	$.get("/myquery", function(data){
@@ -133,9 +133,7 @@ map.on('click', onMapClick);
     function donationOldPersonCard() {
       $.post("/donationOldPersonCard", {email: $("#email-old").val(), amount: $("#amount-old").val(), payment: $("#payment-id-old").val()
                                             , cardNumber: $("#card-num-old").val(), cardExp: $("#exp-old").val()}).done(function(data) {
-        alert("h");
         if(data.result == "failed") {
-          alert("failed 3")
           console.log(data);
           $("#result-old").text("" + data.message);
         } else {
@@ -145,7 +143,6 @@ map.on('click', onMapClick);
       })
     }
         function donationOldPerson() {
-      console.log({email: $("#email-old").val(), amount: $("#amount-old").val(), payment: $("#payment-id-old").val()});
       $.post("/donationOldPerson", {email: $("#email-old").val(), amount: $("#amount-old").val(), payment: $("#payment-id-old").val()}).done(function(data) {
         if(data.result == "failed") {
           console.log(data);
@@ -162,29 +159,20 @@ map.on('click', onMapClick);
       								addr_line_2: $("#addr-line-2").val(), city: $("#city").val(), state_code: $("#state-code").val(),
       								cardNumber: $("#card-num-new").val(), cardExp: $("#exp-new").val()}).done(function(data) {
         if(data.result == "failed") {
-          alert("failed");
           $("#result-old").text("" + data.message);
         } else {
-          alert("success...");
           console.log(data);
           $("#result-old").text("Success! " + data.message);
         }
       })
     }
     function donationNewPerson() {
-    console.log({email: $("#email-new").val(), amount: $("#amount-new").val(), payment: $("#payment-id-new").val(),
-      								f_name: $("#f_name").val(), l_name: $("#l_name").val(), phone: $("#phone").val(), addr_line_1: $("#addr-line-1").val(),
-      								addr_line_2: $("#addr-line-2").val(), city: $("#city").val(), state_code: $("#state-code").val()});
       $.post("/donationNewPerson", {email: $("#email-new").val(), amount: $("#amount-new").val(), payment: $("#payment-id-new").val(),
       								f_name: $("#f_name").val(), l_name: $("#l_name").val(), phone: $("#phone").val(), addr_line_1: $("#addr-line-1").val(),
       								addr_line_2: $("#addr-line-2").val(), city: $("#city").val(), state_code: $("#state-code").val()}).done(function(data) {
         if(data.result == "failed") {
-          alert("failed");
-          console.log(data);
           $("#result-old").text("" + data.message);
         } else if (data.result == "succeeded"){
-          alert("success...");
-          console.log(data);
           $("#result-old").text("Success! " + data.message);
         }
       })
