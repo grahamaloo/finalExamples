@@ -245,15 +245,15 @@ func main() {
 			return
 		}
 		
+		var paymentId int64
 		err = db.QueryRow("SELECT credit_card_payment.card_number FROM credit_card_payment WHERE credit_card_payment.card_number = $1;", card_num).Scan(&card_num)
 		if err == sql.ErrNoRows {
-			db.Exec("WITH A AS (INSERT INTO payment_method VALUES (DEFAULT) RETURNING payment_method.payment_method_id) INSERT INTO credit_card_payment(payment_method_id, card_number, exp) VALUES((SELECT payment_method_id FROM A), $1,$2);", card_num, card_exp)
+			db.QueryRow("WITH A AS (INSERT INTO payment_method VALUES (DEFAULT) RETURNING payment_method.payment_method_id) INSERT INTO credit_card_payment(payment_method_id, card_number, exp) VALUES((SELECT payment_method_id FROM A), $1,$2);", card_num, card_exp).Scan(&paymentId)
 		}
 
 		current_time := time.Now().Local()
 
-		var paymentId int64
-		err = db.QueryRow("SELECT add_donation($1, $2, $3, $4)", amount, current_time.Format("2006-01-02"), personId, paymentId).Scan(&paymentId)
+		err = db.Exec("SELECT add_donation($1, $2, $3, $4)", amount, current_time.Format("2006-01-02"), personId, paymentId)
 		if err != nil {
 			c.AbortWithError(http.StatusInternalServerError, err)
 			return
