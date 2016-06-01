@@ -81,7 +81,8 @@ func main() {
 	})
 
 	router.GET("/addresses", func(c *gin.Context) {
-		rows, err := db.Query("SELECT first_line, second_line, city, state_code FROM address;")
+		//rows, err := db.Query("SELECT first_line, second_line, city, state_code FROM address;")
+		rows, err := db.Query("SELECT a.first_line, a.second_line, a.city, a.state_code FROM address AS a NATURAL JOIN event AS e;")
 		if err != nil {
 			c.AbortWithError(http.StatusInternalServerError, err)
 		}
@@ -213,7 +214,10 @@ func main() {
 	router.POST("/donationNewPersonCard", func(c *gin.Context) {
 		email := c.PostForm("email")
 		amount := c.PostForm("amount")
-		paymentId := c.PostForm("payment") // assume for now payment is passing the id. this is not normal functionality
+		paymentId, err2 := strconv.Atoi(c.PostForm("payment")) // assume for now payment is passing the id. this is not normal functionality
+		if err2 != nil {
+			c.AbortWithError(http.StatusInternalServerError, err2)
+		}  // assume for now payment is passing the id. this is not normal functionality
 		f_name := c.PostForm("f_name")
 		l_name := c.PostForm("l_name")
 		phone := c.PostForm("phone")
@@ -221,8 +225,11 @@ func main() {
 		addr_line_2 := c.PostForm("addr_line_2")
 		city := c.PostForm("city")
 		state_code := c.PostForm("state_code")
-		//card_num := c.PostForm("cardNumber")
-		//card_exp := c.PostForm("cardExp")
+		card_num, err2 := strconv.Atoi(c.PostForm("cardNumber")) // assume for now payment is passing the id. this is not normal functionality
+		if err2 != nil {
+			c.AbortWithError(http.StatusInternalServerError, err2)
+		} 
+		card_exp := c.PostForm("cardExp")
 
 		_, err := db.Exec("SELECT insert_person($1, $2, $3, $4, $5, $6, $7, $8);", f_name, l_name, phone, email, addr_line_1, addr_line_2, city, state_code)
 		
@@ -243,6 +250,11 @@ func main() {
 			return
 		}
 		
+		err = db.QueryRow("SELECT credit_card_payment.card_number FROM credit_card_payment WHERE credit_card_payment.card_number = $1;", card_num).Scan(&card_num)
+		if err == sql.ErrNoRows {
+			db.Exec("WITH A AS (INSERT INTO payment_method VALUES (DEFAULT) RETURNING payment_method.payment_method_id) INSERT INTO credit_card_payment(payment_method_id, card_number, exp) VALUES((SELECT payment_method_id FROM A), $1,$2);", card_num, card_exp)
+		}
+
 		current_time := time.Now().Local()
 		_, err = db.Exec("SELECT add_donation($1, $2, $3, $4)", amount, current_time.Format("2006-01-02"), personId, paymentId)
 		if err != nil {
