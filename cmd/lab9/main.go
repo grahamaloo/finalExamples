@@ -81,8 +81,8 @@ func main() {
 	})
 
 	router.GET("/addresses", func(c *gin.Context) {
-		//rows, err := db.Query("SELECT first_line, second_line, city, state_code FROM address;")
-		rows, err := db.Query("WITH A AS (SELECT address_id AS event_addresses FROM event AS e NATURAL JOIN address) SELECT first_line, second_line, city, state_code FROM A.address;")
+		rows, err := db.Query("SELECT first_line, second_line, city, state_code FROM address;")
+		//rows, err := db.Query("WITH A AS (SELECT address_id AS event_addresses FROM event AS e NATURAL JOIN address) SELECT first_line, second_line, city, state_code FROM A.address;")
 		if err != nil {
 			c.AbortWithError(http.StatusInternalServerError, err)
 		}
