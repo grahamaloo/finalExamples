@@ -69,10 +69,8 @@ map.on('click', onMapClick);
 
   $("#submit1").click(function(){
       if($('input[name="prv"]:checked').val() == 1) {
-        alert("submitted");
          donationOldPersonCard();
       } else {
-         alert("yrrr")
          donationOldPerson();
       }
     });
