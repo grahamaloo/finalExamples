@@ -35,7 +35,7 @@ $(function(){
   }).addTo(map);
 
   searchControl.on("results", function(data) {
-     map.setView([data.results[0].latlng.lat,data.results[0].latlng.lng], 7);
+     map.setView([data.results[0].latlng.lat,data.results[0].latlng.lng], 8);
   });
 	
 	$.get("/myquery", function(data){
