@@ -195,7 +195,7 @@ func main() {
 		current_time := time.Now().Local()
 		
 		var paymentId int64
-		db.QueryRow("WITH A AS (INSERT INTO payment_method VALUES (DEFAULT) RETURNING payment_method.payment_method_id) INSERT INTO credit_card_payment(payment_method_id, card_number, exp) VALUES((SELECT payment_method_id FROM A), $1,$2) RETURNING credit_card_payment.payment_method_id;", card_num, card_exp).Scan(&paymentId)
+		db.QueryRow("WITH A AS (INSERT INTO payment_method VALUES (DEFAULT) RETURNING payment_method.payment_method_id) INSERT INTO check_payment(payment_method_id) VALUES(SELECT payment_method_id FROM A) RETURNING check_payment.payment_method_id;").Scan(&paymentId)
 		_, err = db.Exec("SELECT add_donation($1, $2, $3, $4)", amount, current_time.Format("2006-01-02"), personId, paymentId)
 		
 		if err != nil {
