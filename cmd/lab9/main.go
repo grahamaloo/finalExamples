@@ -224,7 +224,7 @@ func main() {
 		if err2 != nil {
 			c.AbortWithError(http.StatusInternalServerError, err2)
 		} 
-		//card_exp := c.PostForm("cardExp")
+		card_exp := c.PostForm("cardExp")
 
 		_, err := db.Exec("SELECT insert_person($1, $2, $3, $4, $5, $6, $7, $8);", f_name, l_name, phone, email, addr_line_1, addr_line_2, city, state_code)
 		
@@ -247,8 +247,7 @@ func main() {
 		
 		err = db.QueryRow("SELECT credit_card_payment.card_number FROM credit_card_payment WHERE credit_card_payment.card_number = $1;", card_num).Scan(&card_num)
 		if err == sql.ErrNoRows {
-			c.AbortWithError(http.StatusInternalServerError, err)
-			return
+			db.Exec("SELECT insert_card_payment($1,$2);", card_num, card_exp)
 		}
 
 		current_time := time.Now().Local()
