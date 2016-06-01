@@ -246,8 +246,6 @@ func main() {
 			//c.AbortWithError(http.StatusInternalServerError, err)
 			return
 		}
-
-
 		
 		var personId int64
 		err = db.QueryRow("SELECT person.person_id FROM person WHERE person.email = $1;", email).Scan(&personId)
