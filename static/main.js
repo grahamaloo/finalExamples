@@ -28,7 +28,7 @@ $(function(){
       new L.esri.Geocoding.MapServiceProvider({
         label: 'States and Counties',
         url: 'https://sampleserver6.arcgisonline.com/arcgis/rest/services/Census/MapServer',
-        layers: [4, 3],
+        layers: [4, 3.5],
         searchFields: ['NAME', 'STATE_NAME']
       })
     ]
