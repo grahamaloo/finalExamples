@@ -82,8 +82,7 @@ func main() {
 
 	router.GET("/addresses", func(c *gin.Context) {
 		//rows, err := db.Query("SELECT first_line, second_line, city, state_code FROM address;")
-		rows, err := db.Query("WITH A AS (SELECT address_id AS event_addresses FROM event AS e NATURAL JOIN address) 
-								SELECT first_line, second_line, city, state_cote FROM A.address;")
+		rows, err := db.Query("WITH A AS (SELECT address_id AS event_addresses FROM event AS e NATURAL JOIN address) SELECT first_line, second_line, city, state_cote FROM A.address;")
 		if err != nil {
 			c.AbortWithError(http.StatusInternalServerError, err)
 		}
@@ -246,8 +245,7 @@ func main() {
 			return
 		}
 		
-		err = db.QueryRow("SELECT credit_card_payment.card_number FROM credit_card_payment 
-			WHERE credit_card_payment.card_number = $1;", card_num).Scan(&card_num)
+		err = db.QueryRow("SELECT credit_card_payment.card_number FROM credit_card_payment WHERE credit_card_payment.card_number = $1;", card_num).Scan(&card_num)
 		if err == sql.ErrNoRows {
 			.AbortWithError(http.StatusInternalServerError, err)
 		}
