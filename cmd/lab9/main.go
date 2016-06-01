@@ -49,16 +49,6 @@ func main() {
 		c.HTML(http.StatusOK, "index.html", nil)
 	})
 
-	/*router.POST("/ping", func(c *gin.Context) {
-		ping := db.Ping()
-		if ping != nil {
-			// our site can't handle http status codes, but I'll still put them in cause why not
-			c.JSON(http.StatusOK, gin.H{"error": "true", "message": "db was not created. Contact your TA for assistance"})
-		} else {
-			c.JSON(http.StatusOK, gin.H{"Ned", "Caetlyn", "Rob", "Ygritte", "Osha", "Hodor"});
-		}
-	})*/
-
 	type NameList struct {
 		Names []string
 	}
@@ -74,12 +64,13 @@ func main() {
 		Addresses []Address
 	}
 	
+	// for testing purposes only
 	router.GET("/myquery", func(c *gin.Context) {
 		names := NameList{[]string{"Ned", "Caetlyn", "Rob", "Ygritte", "Osha", "Hodor"}}
-		//c.JSON(http.StatusOK, gin.H{"names":[]interface{}{"Ned", "Caetlyn", "Rob", "Ygritte", "Osha", "Hodor"},});
 		c.JSON(http.StatusOK, names)
 	})
 
+	// returns all addresses associated with events in DB via GET
 	router.GET("/addresses", func(c *gin.Context) {
 		//rows, err := db.Query("SELECT first_line, second_line, city, state_code FROM address;")
 		rows, err := db.Query("SELECT a.first_line, a.second_line, a.city, a.state_code FROM address AS a NATURAL JOIN event AS e;")
@@ -103,17 +94,12 @@ func main() {
 		}
 
 		c.JSON(http.StatusOK, AddressList{tempAddresses})
-		})
+	})
 
+	// inserts a new donation for an old person
 	router.POST("/donationOldPerson", func(c *gin.Context) {
 		email := c.PostForm("email")
 		amount := c.PostForm("amount")
-		//paymentId := c.PostForm("payment") // assume for now payment is passing the id. this is not normal functionality
-
-		//if hasIllegalSyntax(email) || hasIllegalSyntax(amount) || hasIllegalSyntax(payment) {
-		//	c.JSON(http.StatusOK, gin.H{"result":"failed", "message":"improper syntax"})
-		//	return
-		//}
 
 		var personId int64
 		err := db.QueryRow("SELECT person.person_id FROM person WHERE person.email = $1;", email).Scan(&personId)
@@ -140,14 +126,10 @@ func main() {
 		}
 	})
 	
+	// insert a new donation for an old person using a card. it will look for the card in the DB before inserting a new card number.
 	router.POST("/donationOldPersonCard", func(c *gin.Context) {
 		email := c.PostForm("email")
 		amount := c.PostForm("amount")
-		//card_num, err2 := strconv.Atoi(c.PostForm("cardNumber")) // assume for now payment is passing the id. this is not normal functionality
-		//if err2 != nil {
-		//	c.AbortWithError(http.StatusInternalServerError, err2)
-		//	return
-		//}
 		card_num := c.PostForm("cardNumber") 
 		card_exp := c.PostForm("cardExp")
 
@@ -190,14 +172,10 @@ func main() {
 		}
 	})
 	
+	// insert a new donation for a new person
 	router.POST("/donationNewPerson", func(c *gin.Context) {
 		email := c.PostForm("email")
-		amount := c.PostForm("amount")
-		//paymentId := c.PostForm("payment")
-		//paymentId, err2 := strconv.Atoi(c.PostForm("payment")) // assume for now payment is passing the id. this is not normal functionality
-		//if err2 != nil {
-		//	c.AbortWithError(http.StatusInternalServerError, err2)
-		//} 
+		amount := c.PostForm("amount") 
 		f_name := c.PostForm("f_name")
 		l_name := c.PostForm("l_name")
 		phone := c.PostForm("phone")
@@ -243,13 +221,11 @@ func main() {
 			return
 		}
 	})
+
+	// insert new donation for a new person. this will still look for the card they used in the db before creating a new entry.
 	router.POST("/donationNewPersonCard", func(c *gin.Context) {
 		email := c.PostForm("email")
 		amount := c.PostForm("amount")
-		//paymentId, err2 := strconv.Atoi(c.PostForm("payment")) // assume for now payment is passing the id. this is not normal functionality
-		//if err2 != nil {
-		//	c.AbortWithError(http.StatusInternalServerError, err2)
-		//}  // assume for now payment is passing the id. this is not normal functionality
 		f_name := c.PostForm("f_name")
 		l_name := c.PostForm("l_name")
 		phone := c.PostForm("phone")
@@ -257,16 +233,13 @@ func main() {
 		addr_line_2 := c.PostForm("addr_line_2")
 		city := c.PostForm("city")
 		state_code := c.PostForm("state_code")
-		card_num, err2 := strconv.Atoi(c.PostForm("cardNumber")) // assume for now payment is passing the id. this is not normal functionality
-		if err2 != nil {
-			c.AbortWithError(http.StatusInternalServerError, err2)
-		} 
+		card_num := c.PostForm("cardNumber") // assume for now payment is passing the id. this is not normal functionality
 		card_exp := c.PostForm("cardExp")
 
 		_, err := db.Exec("SELECT insert_person($1, $2, $3, $4, $5, $6, $7, $8);", f_name, l_name, phone, email, addr_line_1, addr_line_2, city, state_code)
 		
 		if err != nil {
-			//c.JSON
+			c.JSON(http.StatusOK, gin.H{"result":"failed", "message":"failed at insert person"})
 			//c.AbortWithError(http.StatusInternalServerError, err)
 			return
 		}
@@ -278,7 +251,8 @@ func main() {
 			return
 		}
 		if err != nil {
-			c.AbortWithError(http.StatusInternalServerError, err)
+			//c.AbortWithError(http.StatusInternalServerError, err)
+			c.JSON(http.StatusOK, gin.H{"result":"failed", "message":"failed at select person id"})
 			return
 		}
 		
@@ -287,8 +261,16 @@ func main() {
 		if err == sql.ErrNoRows {
 			err = db.QueryRow("WITH A AS (INSERT INTO payment_method VALUES (DEFAULT) RETURNING payment_method.payment_method_id) INSERT INTO credit_card_payment(payment_method_id, card_number, exp) VALUES((SELECT payment_method_id FROM A), $1,$2) RETURNING credit_card_payment.payment_method_id;", card_num, card_exp).Scan(&paymentId)
 		} else if err != nil {
-			c.AbortWithError(http.StatusInternalServerError, err)
+			//c.AbortWithError(http.StatusInternalServerError, err)
+			c.JSON(http.StatusOK, gin.H{"result":"failed", "message":"card num look up failed"})
 			return
+		} else {
+			err = db.QueryRow("SELECT ccp.payment_method_id FROM credit_card_payment AS ccp WHERE ccp.card_number = $1", card_num).Scan(&paymentId)
+			if err != nil {
+			//c.AbortWithError(http.StatusInternalServerError, err)
+			c.JSON(http.StatusOK, gin.H{"result":"failed", "message":"select payment id failed", "card_num": card_num, "err": err})
+			return
+			}
 		}
 
 		current_time := time.Now().Local()
@@ -302,100 +284,6 @@ func main() {
 			return
 		}
 	})
-/*
-	router.POST("/submit1", func(c *gin.Context) {
-		// this is meant for SQL injection examples ONLY.
-		// Don't copy this for use in an actual environment, even if you do stop SQL injection
-		username := c.PostForm("username")
-		password := c.PostForm("password")
-		if hasIllegalSyntax(username) || hasIllegalSyntax(password) {
-			c.JSON(http.StatusOK, gin.H{"result": "failed", "message": "Don't use syntax that isn't allowed"})
-			return
-		}
-
-		rows, err := db.Query("SELECT usr.name FROM usr WHERE usr.name = '" + username + "' AND usr.password = '" + password + "';")
-		if err != nil {
-			c.AbortWithError(http.StatusInternalServerError, err)
-			return
-		}
-		cols, _ := rows.Columns()
-		if len(cols) == 0 {
-			c.AbortWithStatus(http.StatusNoContent)
-			return
-		}
-
-		rowCount := 0
-		var resultUser string
-		for rows.Next() {
-			rows.Scan(&resultUser)
-			rowCount++
-		}
-		if rowCount > 1 {
-			c.JSON(http.StatusOK, gin.H{"result": "failed", "message": "Too many users returned!"})
-			return
-		}
-		// quick way to check if the user logged in properly
-		if rowCount == 0 {
-			c.JSON(http.StatusOK, gin.H{"result": "failed", "message": "Wrong password/username!"})
-			return
-		}
-
-		if resultUser == "admin" {
-			c.JSON(http.StatusOK, gin.H{"result": "success", "username": resultUser, "randomCode": rand.Int()})
-		} else {
-			c.JSON(http.StatusOK, gin.H{"result": "success", "username": resultUser})
-		}
-	})
-
-	router.POST("/submit2", func(c *gin.Context) {
-		username := c.PostForm("username")
-		password := c.PostForm("password")
-		if hasIllegalSyntax(username) || hasIllegalSyntax(password) {
-			c.JSON(http.StatusOK, gin.H{"result": "failed", "message": "Don't use syntax that isn't allowed"})
-			return
-		}
-		// SQL injection in password only
-		rows, err := db.Query("SELECT usr.name FROM usr WHERE usr.name = '" + username + "';")
-		if err != nil {
-			c.AbortWithError(http.StatusInternalServerError, err)
-			return
-		}
-		cols, _ := rows.Columns()
-		if len(cols) == 0 {
-			c.AbortWithStatus(http.StatusNoContent)
-			return
-		}
-
-		rowCount := 0
-		var resultUser string
-		for rows.Next() {
-			rows.Scan(&resultUser)
-			rowCount++
-		}
-		if rowCount > 1 {
-			c.JSON(http.StatusOK, gin.H{"result": "failed", "message": "Too many users returned!"})
-			return
-		}
-		// quick way to check if the user logged in properly
-		if rowCount == 0 {
-			c.JSON(http.StatusOK, gin.H{"result": "failed", "message": "Wrong password/username!"})
-			return
-		}
-
-		if resultUser == "admin" {
-			c.JSON(http.StatusOK, gin.H{"result": "success", "username": resultUser, "randomCode": rand.Int()})
-		} else {
-			c.JSON(http.StatusOK, gin.H{"result": "success", "username": resultUser})
-		}
-	})
-	
-	router.GET("/addresses", func(c *gin.Context) {
-			//var a := [2]string{4506 NE 17th ave, Seattle Washington, 8007 NE 179th Place Seattle Washington}
-			db.Query("SELECT a.first_line,a.second_line, address FROM address AS a NATURAL JOIN Car WHERE Car.brand = 'Honda' AND Car.model = 'Civic'")
-	})
-	*/
-
-	
 
 	// NO code should go after this line. it won't ever reach that point
 	router.Run(":" + port)
