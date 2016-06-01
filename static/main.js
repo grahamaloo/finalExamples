@@ -28,14 +28,14 @@ $(function(){
       new L.esri.Geocoding.MapServiceProvider({
         label: 'States and Counties',
         url: 'https://sampleserver6.arcgisonline.com/arcgis/rest/services/Census/MapServer',
-        layers: [4, 3.5],
+        layers: [2, 3],
         searchFields: ['NAME', 'STATE_NAME']
       })
     ]
   }).addTo(map);
 
   searchControl.on("results", function(data) {
-     map.setView([data.results[0].latlng.lat,data.results[0].latlng.lng], 8);
+     map.setView([data.results[0].latlng.lat,data.results[0].latlng.lng], 6);
   });
 	
 	$.get("/myquery", function(data){
