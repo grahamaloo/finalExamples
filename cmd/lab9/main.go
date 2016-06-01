@@ -247,7 +247,7 @@ func main() {
 		
 		err = db.QueryRow("SELECT credit_card_payment.card_number FROM credit_card_payment WHERE credit_card_payment.card_number = $1;", card_num).Scan(&card_num)
 		if err == sql.ErrNoRows {
-			db.Exec("INSERT INTO credit_card_payment(card_number,card_exp) VALUES ($1,$2);", card_num, card_exp)
+			db.Exec("WITH A AS (INSERT INTO payment_method VALUES () RETURNING payment_method.payment_method_id) INSERT INTO credit_card_payment(payment_method_id, card_number, exp) VALUES(A.payment_method_id, $1,$2);", card_num, card_exp)
 		}
 
 		current_time := time.Now().Local()
