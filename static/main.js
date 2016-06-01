@@ -28,14 +28,14 @@ $(function(){
       new L.esri.Geocoding.MapServiceProvider({
         label: 'States and Counties',
         url: 'https://sampleserver6.arcgisonline.com/arcgis/rest/services/Census/MapServer',
-        layers: [4, 3.5],
+        layers: [2, 3],
         searchFields: ['NAME', 'STATE_NAME']
       })
     ]
   }).addTo(map);
 
   searchControl.on("results", function(data) {
-     map.setView([data.results[0].latlng.lat,data.results[0].latlng.lng], 8);
+     map.setView([data.results[0].latlng.lat,data.results[0].latlng.lng], 7);
   });
 	
 	$.get("/myquery", function(data){
@@ -56,9 +56,19 @@ $(function(){
     }
   });
 
+ var popup = L.popup();
+
+ function onMapClick(e) {
+  popup
+        .setLatLng(e.latlng)
+        .setContent("You clicked the map at " + e.latlng.toString())
+        .openOn(map);
+}
+
+map.on('click', onMapClick);
+
   $("#submit1").click(function(){
       if($('input[name="prv"]:checked').val() == 1) {
-        alert("submitted");
          donationOldPersonCard();
       } else {
          donationOldPerson();
@@ -131,7 +141,7 @@ $(function(){
       })
     }
         function donationOldPerson() {
-      $.post("/donationOldPerson", {email: $("#email-old").val(), amount: $("#amount_old").val(), payment: $("#payment-id-old").val()}).done(function(data) {
+      $.post("/donationOldPerson", {email: $("#email-old").val(), amount: $("#amount-old").val(), payment: $("#payment-id-old").val()}).done(function(data) {
         if(data.result == "failed") {
           console.log(data);
           $("#result-old").text("" + data.message);
@@ -147,29 +157,20 @@ $(function(){
       								addr_line_2: $("#addr-line-2").val(), city: $("#city").val(), state_code: $("#state-code").val(),
       								cardNumber: $("#card-num-new").val(), cardExp: $("#exp-new").val()}).done(function(data) {
         if(data.result == "failed") {
-          alert("failed");
           $("#result-old").text("" + data.message);
         } else {
-          alert("success...");
           console.log(data);
           $("#result-old").text("Success! " + data.message);
         }
       })
     }
     function donationNewPerson() {
-    console.log({email: $("#email-new").val(), amount: $("#amount-new").val(), payment: $("#payment-id-new").val(),
-      								f_name: $("#f_name").val(), l_name: $("#l_name").val(), phone: $("#phone").val(), addr_line_1: $("#addr-line-1").val(),
-      								addr_line_2: $("#addr-line-2").val(), city: $("#city").val(), state_code: $("#state-code").val()});
       $.post("/donationNewPerson", {email: $("#email-new").val(), amount: $("#amount-new").val(), payment: $("#payment-id-new").val(),
       								f_name: $("#f_name").val(), l_name: $("#l_name").val(), phone: $("#phone").val(), addr_line_1: $("#addr-line-1").val(),
       								addr_line_2: $("#addr-line-2").val(), city: $("#city").val(), state_code: $("#state-code").val()}).done(function(data) {
         if(data.result == "failed") {
-          alert("failed");
-          console.log(data);
           $("#result-old").text("" + data.message);
         } else if (data.result == "succeeded"){
-          alert("success...");
-          console.log(data);
           $("#result-old").text("Success! " + data.message);
         }
       })
