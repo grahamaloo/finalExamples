@@ -132,7 +132,7 @@ $(function(){
       })
     }
         function donationOldPerson() {
-      console.log({email: $("#email-old").val(), amount: $("#amount_old").val(), payment: $("#payment-id-old").val()}});
+      console.log({email: $("#email-old").val(), amount: $("#amount_old").val(), payment: $("#payment-id-old").val()});
       $.post("/donationOldPerson", {email: $("#email-old").val(), amount: $("#amount_old").val(), payment: $("#payment-id-old").val()}).done(function(data) {
         if(data.result == "failed") {
           console.log(data);
