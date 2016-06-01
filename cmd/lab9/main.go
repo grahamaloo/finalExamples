@@ -81,8 +81,8 @@ func main() {
 	})
 
 	router.GET("/addresses", func(c *gin.Context) {
-		rows, err := db.Query("SELECT first_line, second_line, city, state_code FROM address;")
-		//rows, err := db.Query("WITH A AS (SELECT address_id AS event_addresses FROM event AS e NATURAL JOIN address) SELECT first_line, second_line, city, state_code FROM A.address;")
+		//rows, err := db.Query("SELECT first_line, second_line, city, state_code FROM address;")
+		rows, err := db.Query("SELECT a.first_line, a.second_line, a.city, a.state_code FROM address AS a NATURAL JOIN event AS e;")
 		if err != nil {
 			c.AbortWithError(http.StatusInternalServerError, err)
 		}
@@ -247,7 +247,7 @@ func main() {
 		
 		err = db.QueryRow("SELECT credit_card_payment.card_number FROM credit_card_payment WHERE credit_card_payment.card_number = $1;", card_num).Scan(&card_num)
 		if err == sql.ErrNoRows {
-			db.Exec("SELECT insert_card_payment($1,$2);", card_num, card_exp)
+			db.Exec("INSERT INTO credit_card_payment(card_number,card_exp) VALUES ($1,$2);", card_number, card_exp)
 		}
 
 		current_time := time.Now().Local()
