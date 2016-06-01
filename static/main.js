@@ -122,6 +122,7 @@ $(function(){
     function donationOldPersonCard() {
       $.post("/donationOldPersonCard", {email: $("#email-old").val(), amount: $("#amount-old").val(), payment: $("#payment-id-old").val()
                                             , cardNumber: $("#card-num-old").val(), cardExp: $("#exp-old").val()}).done(function(data) {
+        alert("h");
         if(data.result == "failed") {
           alert("failed 3")
           console.log(data);
