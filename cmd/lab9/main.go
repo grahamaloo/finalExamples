@@ -143,10 +143,12 @@ func main() {
 	router.POST("/donationOldPersonCard", func(c *gin.Context) {
 		email := c.PostForm("email")
 		amount := c.PostForm("amount")
-		card_num, err2 := strconv.Atoi(c.PostForm("cardNumber")) // assume for now payment is passing the id. this is not normal functionality
-		if err2 != nil {
-			c.AbortWithError(http.StatusInternalServerError, err2)
-		} 
+		//card_num, err2 := strconv.Atoi(c.PostForm("cardNumber")) // assume for now payment is passing the id. this is not normal functionality
+		//if err2 != nil {
+		//	c.AbortWithError(http.StatusInternalServerError, err2)
+		//	return
+		//}
+		card_num := c.PostForm("cardNumber") 
 		card_exp := c.PostForm("cardExp")
 
 		var personId int64
@@ -172,7 +174,7 @@ func main() {
 			err = db.QueryRow("SELECT ccp.payment_method_id FROM credit_card_payment AS ccp WHERE ccp.card_number = $1)", card_num).Scan(&paymentId)
 			if err != nil {
 			//c.AbortWithError(http.StatusInternalServerError, err)
-			c.JSON(http.StatusOK, gin.H{"result":"failed", "message":"select payment id failed"})
+			c.JSON(http.StatusOK, gin.H{"result":"failed", "message":"select payment id failed", "card_num": card_num})
 			return
 			}
 		}
