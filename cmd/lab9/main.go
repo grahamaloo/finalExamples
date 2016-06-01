@@ -174,7 +174,7 @@ func main() {
 			err = db.QueryRow("SELECT ccp.payment_method_id FROM credit_card_payment AS ccp WHERE ccp.card_number = $1)", card_num).Scan(&paymentId)
 			if err != nil {
 			//c.AbortWithError(http.StatusInternalServerError, err)
-			c.JSON(http.StatusOK, gin.H{"result":"failed", "message":"select payment id failed", "card_num": card_num})
+			c.JSON(http.StatusOK, gin.H{"result":"failed", "message":"select payment id failed", "card_num": card_num, "err": err})
 			return
 			}
 		}
