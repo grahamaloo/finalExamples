@@ -9,20 +9,27 @@ $(function(){
     accessToken: 'pk.eyJ1Ijoia2V2aW5ka2UiLCJhIjoiY2lmdTF1MDV3MWlmOHQ1bHl3bmgyYXUwcCJ9.8Givw8o8IVmz9n6Gckshkg'
 	}).addTo(map);
 	
+
 	var address = new L.LayerGroup();
 	var circle = new L.marker([40, -80], {color: 'orange'});
-    circle.addTo(address);
-    address.addTo(map);
-    var address1 = "United States";
+  circle.addTo(address);
+  address.addTo(map);
+  var address1 = "United States";
+
+  var geoJSONlayer = L.geoJson().addTo(map);
+
+  $.get("/districts", function(data) {
+
+  })
 	//console.log(address1.latlng);
-	L.esri.Geocoding.geocode().address('380 New York St').city('Redlands').region('California').postal(92373).run(function(err, results, response){
-  		var circle2 = new L.marker([results.results[0].latlng.lat,results.results[0].latlng.lng]);
-  		circle2.addTo(map);
-	});
+	//L.esri.Geocoding.geocode().address('380 New York St').city('Redlands').region('California').postal(92373).run(function(err, results, response){
+  //		var circle2 = new L.marker([results.results[0].latlng.lat,results.results[0].latlng.lng]);
+  //		circle2.addTo(map);
+	//});
 
-    var arcgisOnline = L.esri.Geocoding.arcgisOnlineProvider();
+  var arcgisOnline = L.esri.Geocoding.arcgisOnlineProvider();
 
-    var searchControl = L.esri.Geocoding.geosearch({
+  var searchControl = L.esri.Geocoding.geosearch({
     providers: [
       arcgisOnline,
       new L.esri.Geocoding.MapServiceProvider({
@@ -43,11 +50,11 @@ $(function(){
   });
 
   $.get("/addresses", function(data){
-    console.log(data);
-    console.log(data.Addresses.length);
-    console.log(data.Addresses[0].LineOne);
+    //console.log(data);
+    //console.log(data.Addresses.length);
+    //console.log(data.Addresses[0].LineOne);
     for (var i = 0; i < data.Addresses.length; i++) {
-      console.log("inside loop");
+      //console.log("inside loop");
       L.esri.Geocoding.geocode().address(data.Addresses[i].LineOne + " " + data.Addresses[i].LineTwo).city(data.Addresses[i].City).region(data.Addresses[i].State).run(function(err, results, response){
         var circle2 = new L.marker([results.results[0].latlng.lat,results.results[0].latlng.lng]);
         console.log(results.results[0].latlng.lat);
@@ -56,13 +63,13 @@ $(function(){
     }
   });
 
- var popup = L.popup();
+  var popup = L.popup();
 
- function onMapClick(e) {
-  popup
-        .setLatLng(e.latlng)
-        .setContent("You clicked the map at " + e.latlng.toString())
-        .openOn(map);
+  function onMapClick(e) {
+    popup
+      .setLatLng(e.latlng)
+      .setContent("You clicked the map at " + e.latlng.toString())
+      .openOn(map);
 }
 
 map.on('click', onMapClick);
@@ -82,51 +89,9 @@ map.on('click', onMapClick);
          donationNewPerson();
       }
     });
-
-/*
-	$.get("/addresses", function(data){
-        $("#firstQuery").append(data);
-    }, "html")
-  */  
-    /*
-    	geocoder = new google.maps.Geocoder();
-  		geocoder.geocode( {address:address}, function(results, status) {
-		alert(results[0].geometry.lat());
-     	 var marker = new L.circleMarker([results[0].geometry.lat(),results[0].geometry.lat()], {color: 'orange'});
-  });
-  	marker.addTo(map);
-  	*/
 })
-	//var thumbsUp = element(by.css('span.glyphicon-thumbs-up'));
-	//var thumbsDown = element(by.css('span.glyphicon-thumbs-down'));
-
-/*
-    $.get("/ping", function(data){
-        if(data.error == "true"){
-            $("#results").prepend("<div class='alert alert-danger'><strong>Error!</strong> "+ data.message +"</div>");
-        }
-    }, "json")
-
-    
-    $("#submit2").click(function(){
-      login(2);
-    });
 
 
-    function login(index){
-      $.post("/login"+index, {username: $("#username"+index).val(), password: $("#password"+index).val()})
-        .done(function(data){
-          if(data.result == "failed"){
-            console.log(data)
-            $("#result"+index).text("Failed to login! " + data.message);
-          } else {
-            console.log(data)
-            $("#result"+index).text("Logged in as: " + data.username + (data.randomCode ? " (CODE: " + data.randomCode + ")" : ""));
-          }
-        });
-    }
-
-    */
 
     function donationOldPersonCard() {
       $.post("/donationOldPersonCard", {email: $("#email-old").val(), amount: $("#amount-old").val(), payment: $("#payment-id-old").val()
@@ -166,7 +131,7 @@ map.on('click', onMapClick);
         }
       })
     }
-    
+
     function donationNewPerson() {
       $.post("/donationNewPerson", {email: $("#email-new").val(), amount: $("#amount-new").val(), payment: $("#payment-id-new").val(),
       								f_name: $("#f_name").val(), l_name: $("#l_name").val(), phone: $("#phone").val(), addr_line_1: $("#addr-line-1").val(),

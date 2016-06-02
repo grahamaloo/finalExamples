@@ -96,6 +96,10 @@ func main() {
 		c.JSON(http.StatusOK, AddressList{tempAddresses})
 	})
 
+	router.GET("/districts", func(c *gin.Context) {
+		
+		})
+
 	// inserts a new donation for an old person
 	router.POST("/donationOldPerson", func(c *gin.Context) {
 		email := c.PostForm("email")
