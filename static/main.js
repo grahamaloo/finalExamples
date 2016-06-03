@@ -20,8 +20,8 @@ $(function(){
 
   $.get("/districts", function(data) {
     console.log(data);
-    for (var i = 0; i < data.Districts.length; i++) {
-      data.Districts[i] = JSON.parse(data.Districts[i]);
+    for (var i = 0; i < data.districts.length; i++) {
+      data.districts[i] = JSON.parse(data.districts[i]);
     }
     console.log(data);
   })
