@@ -99,18 +99,19 @@ func main() {
 			return
 		}
 		var elem string
-		var shapes []string
+		var shapes [][]byte
 		for rows.Next() {
 			rows.Scan(&elem)
-			shapes = append(shapes, elem)
-		}
-		ret, err2 := json.Marshal(shapes)
-		if err2 != nil {
+			ret, err2 := json.Marshal(shapes)
+			if err2 != nil {
 			c.JSON(http.StatusOK, gin.H{"result":"failed", "message":"Marshal failed"})
 			return
+			}
+			shapes = append(shapes, ret)
 		}
 
-		c.JSON(http.StatusOK, ret)
+
+		c.JSON(http.StatusOK, gin.H{shapes})
 		return
 	})
 
