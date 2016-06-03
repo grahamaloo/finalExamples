@@ -111,7 +111,7 @@ func main() {
 		}
 
 
-		c.JSON(http.StatusOK, gin.H{shapes})
+		c.JSON(http.StatusOK, gin.H{"districts":shapes})
 		return
 	})
 
