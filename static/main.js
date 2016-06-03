@@ -22,6 +22,7 @@ $(function(){
     console.log(data);
     for (var i = 0; i < data.districts.length; i++) {
       data.districts[i] = JSON.parse(data.districts[i]);
+      geoJSONlayer.addData(data.districts[i]);
     }
     console.log(data);
   })
