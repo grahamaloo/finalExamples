@@ -11,6 +11,7 @@ import (
 	"net/http"
 	"os"
 	"time"
+	"encoding/json"
 	//"strconv"
 	//"strings"
 
@@ -97,8 +98,26 @@ func main() {
 	})
 
 	router.GET("/districts", func(c *gin.Context) {
-		
-		})
+		rows, err := db.Query("SELECT get_districts_by_state('Washington')")
+		if err != nil {
+			c.JSON(http.StatusOK, gin.H{"result":"failed", "message":"district query failed"})
+			return
+		}
+		var elem string
+		var shapes []string
+		for rows.Next() {
+			rows.Scan(&elem)
+			shapes = append(shapes, elem)
+		}
+		ret, err2 := json.Marshal()
+		if err2 != nil {
+			c.JSON(http.StatusOK, gin.H{"result":"failed", "message":"Marshal failed"})
+			return
+		}
+
+		c.JSON(http.StatusOK, ret)
+		return
+	})
 
 	// inserts a new donation for an old person
 	router.POST("/donationOldPerson", func(c *gin.Context) {

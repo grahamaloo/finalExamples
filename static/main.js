@@ -19,7 +19,7 @@ $(function(){
   var geoJSONlayer = L.geoJson().addTo(map);
 
   $.get("/districts", function(data) {
-
+    console.log(data);
   })
 	//console.log(address1.latlng);
 	//L.esri.Geocoding.geocode().address('380 New York St').city('Redlands').region('California').postal(92373).run(function(err, results, response){
