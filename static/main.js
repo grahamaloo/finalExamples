@@ -16,7 +16,38 @@ $(function(){
   address.addTo(map);
   var address1 = "United States";
 
-  var geoJSONlayer = L.geoJson().addTo(map);
+  var defaultStyle = {
+    color: "#2262CC",
+    weight: 2,
+    opacity: 0.6,
+    fillOpacity: 0.1,
+    fillColor: "#2262CC"
+  };
+  var hoverStyle = {
+    color: '#2262CC', 
+    weight: 3,
+    opacity: 0.6,
+    fillOpacity: 0.65,
+    fillColor: '#2262CC'
+  };
+  
+  var onEachFeature = function(feature, layer) {
+    layer.setStyle(defaultStyle);
+
+    (function(layer, properties) {
+      layer.on("mouseover", function (e) {
+        layer.setStyle(hoverStyle);
+      });
+
+      layer.on("mouseout", function (e) {
+        layer.setStyle(defaultStyle);
+      });
+    })(layer, feature.properties);
+  };
+
+  var geoJSONlayer = L.geoJson({
+    onEachFeature : onEachFeature
+  }).addTo(map);
 
   $.get("/districts", function(data) {
     console.log(data);
