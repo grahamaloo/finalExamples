@@ -104,7 +104,7 @@ func main() {
 			rows.Scan(&elem)
 			shapes = append(shapes, elem)
 		}
-		ret, err2 := json.Marshal()
+		ret, err2 := json.Marshal(shapes)
 		if err2 != nil {
 			c.JSON(http.StatusOK, gin.H{"result":"failed", "message":"Marshal failed"})
 			return
