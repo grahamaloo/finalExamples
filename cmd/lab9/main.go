@@ -65,11 +65,6 @@ func main() {
 		Addresses []Address
 	}
 	
-	// for testing purposes only
-	router.GET("/myquery", func(c *gin.Context) {
-		names := NameList{[]string{"Ned", "Caetlyn", "Rob", "Ygritte", "Osha", "Hodor"}}
-		c.JSON(http.StatusOK, names)
-	})
 
 	// returns all addresses associated with events in DB via GET
 	router.GET("/addresses", func(c *gin.Context) {
