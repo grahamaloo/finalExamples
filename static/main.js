@@ -11,8 +11,8 @@ $(function(){
 	
 
 	var address = new L.LayerGroup();
-	var circle = new L.marker([40, -80], {color: 'orange'});
-  circle.addTo(address);
+	//var circle = new L.marker([40, -80], {color: 'orange'});
+  //circle.addTo(address);
   address.addTo(map);
   var address1 = "United States";
 
