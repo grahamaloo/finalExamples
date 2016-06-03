@@ -11,7 +11,7 @@ import (
 	"net/http"
 	"os"
 	"time"
-	"encoding/json"
+	//"encoding/json"
 	//"strconv"
 	//"strings"
 
@@ -99,15 +99,15 @@ func main() {
 			return
 		}
 		var elem string
-		var shapes [][]byte
+		 var shapes []string
 		for rows.Next() {
 			rows.Scan(&elem)
-			ret, err2 := json.Marshal(shapes)
-			if err2 != nil {
-			c.JSON(http.StatusOK, gin.H{"result":"failed", "message":"Marshal failed"})
-			return
-			}
-			shapes = append(shapes, ret)
+			// ret, err2 := json.Marshal(shapes)
+			// if err2 != nil {
+			// c.JSON(http.StatusOK, gin.H{"result":"failed", "message":"Marshal failed"})
+			// return
+			// }
+			shapes = append(shapes, elem)
 		}
 
 
