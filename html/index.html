@@ -6,13 +6,6 @@
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" />
         <link rel="stylesheet" href="../static/main.css" />
         
-          <!-- leaflet libraries 
-    	<script src="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"></script>
-   		<link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css" />
-		-->
-		
-   		<!-- <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAM0ju-6R-nDX9bkLFVswWNZE4q5afd5x4&callback=initMap"
-  type="text/javascript"></script>-->
    		
    		 <!-- Load Leaflet from CDN -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/leaflet/1.0.0-beta.2/leaflet.css" />
@@ -40,9 +33,8 @@
           <span>Payment method: <input type="text" id="payment-id-old"/></span>
           <span>card</span>
           <input type="radio" value="1" name="prv">cash
-          <input type="radio" value="2" name="prv">check
-          <!--<input type="radio" value="3" name="prv"> -->
-          <span>Card number: <input type="text" id="card-num-old"/></span>
+          <input type="radio" value="2" name="prv">
+          <span>Card number (16 digits): <input type="text" id="card-num-old"/></span>
           <span>Expiration date: <input type="text" id="exp-old"/></span>
           <button id="submit1">Submit</button>
           <span id="result1"></span>
@@ -54,7 +46,7 @@
           <p>Make a donation as a new donor</p>
           <span>First Name: <input type="text" id="f_name"/></span>
           <span>Last Name: <input type="text" id="l_name"/></span>
-          <span>Phone: <input type="text" id="phone"/></span>
+          <span>Phone (10 digits): <input type="text" id="phone"/></span>
           <span>Email: <input type="text" id="email-new"/></span>
           <span>Address Line 1: <input type="text" id="addr-line-1"/></span>
           <span>Line 2: <input type="text" id="addr-line-2"/></span>
@@ -64,10 +56,9 @@
           <span>Payment method: <input type="text" id="payment-id-new"/></span></p>
           <span>card</span>
           <input type="radio" value="1" name="new">cash
-          <input type="radio" value="2" name="new">check
-          <!--<input type="radio" value="3" name="new"> !-->
-          <span>Card number: <input type="text" id="card-num-new"/></span>
-          <span>Expiration date: <input type="text" id="exp-new"/></span>
+          <input type="radio" value="2" name="new">
+          <span>Card number (16 digits): <input type="text" id="card-num-new"/></span>
+          <span>Expiration date (eg: "2016-01-01"): <input type="text" id="exp-new"/></span>
           <button id="submit2">Submit</button>
           <span id="result2"></span>
         </div>
