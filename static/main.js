@@ -30,7 +30,7 @@ $(function(){
     fillOpacity: 0.65,
     fillColor: '#2262CC'
   };
-  
+
   var onEachFeature = function(feature, layer) {
     layer.setStyle(defaultStyle);
 
@@ -45,7 +45,7 @@ $(function(){
     })(layer, feature.properties);
   };
 
-  var geoJSONlayer = L.geoJson({
+  var geoJSONlayer = L.geoJson(null, {
     onEachFeature : onEachFeature
   }).addTo(map);
 
